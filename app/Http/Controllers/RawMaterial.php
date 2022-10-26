@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\RawMaterialStock;
 use DataTables;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Validator;
 class RawMaterial extends Controller
 {
     //raw material
@@ -14,6 +15,7 @@ class RawMaterial extends Controller
         $materials=Material::find($id);
         return view('material.index',compact('materials'));
     }
+
      //rawmaterial_update
      public function rawmaterial_update(Request $request, $id)
     {
@@ -32,6 +34,7 @@ class RawMaterial extends Controller
      public function rawmateriallist(){
         return view('material.list');
     }
+
     //list
     public function rawmaterial_data(Request $request){
         if ($request->ajax()) {
@@ -57,9 +60,17 @@ class RawMaterial extends Controller
         }
       
     }
+
     public function rawmaterialstore(Request $request)
-    
     {
+        $validator = Validator::make($request->all(), [
+            'material_name' => 'required|unique:materials',            
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $material = new Material;
         $material->material_name = $request->material_name;
         $material->unit_type = $request->unit_type;
@@ -68,6 +79,7 @@ class RawMaterial extends Controller
         $material->created_at = Carbon::now();
         $material->save();
         return Redirect()->back()->with('success', 'New material Added.');
+        
     }
 
         //materialstock

@@ -9,11 +9,10 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 
-
     <div class="container p-4">
     <div class="row shadow rounded bg-light" style="padding-top:20px">
       <div class="col-md-10">
-      <h2>Raw Material List</h2>
+      <h2>Raw Materials List</h2>
       </div>
       <div class="col-md-2 text-right">
           <button type="button" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#exampleModal">Add Material</button>
@@ -56,7 +55,7 @@
         <form method="POST" action="{{route('raw.material.store')}}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="exampleInputEmail1"><span class="text-danger">*</span>Material Name</label>
                             <input type="text" class="form-control" name="material_name" value="" placeholder="Enter material name" required>
@@ -67,30 +66,23 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Material Type Unit</label>
-                            <input type="text" class="form-control" name="unit_type" placeholder="Example kg">
-                            @error('logo')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            <img class="shadow rounded" src="" alt="" width="260px">
+                            <label for="exampleInputEmail1"><span class="text-danger">*</span>Material Type Unit</label>
+                            <input type="text" class="form-control" name="unit_type" required placeholder="Ex. kg">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1"><span class="text-danger">*</span>Price</label>
+                            <input type="number" step="any" class="form-control" value="" required name="price" >
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Price</label>
-                            <input type="text" class="form-control" value="" name="price" >
-                            @error('phone')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Note</label>
-                            <textarea class="form-control" name="note" cols="30" rows="5"></textarea>
+                            <textarea class="form-control" name="note" cols="30" rows="3"></textarea>
                             @error('address')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror

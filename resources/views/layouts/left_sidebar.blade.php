@@ -4,7 +4,7 @@
             <span class="smini-visible">
                 <i class="fa fa-circle-notch text-primary"></i>
             </span>
-            <span class="smini-hide font-size-h5 tracking-wider">3i Logistics<span class="font-w400"></span>
+            <span class="smini-hide font-size-h5 tracking-wider">Royal Green LTD.<span class="font-w400"></span>
             </span>
         </a>
         
@@ -18,12 +18,12 @@
     <div class="js-sidebar-scroll">
         <div class="content-side">
         <ul class="nav-main">
-        <li class="nav-main-item">
-                    <a class="nav-main-link active" href="{{route('/')}}">
-                        <i class="nav-main-link-icon si si-speedometer"></i>
-                        <span class="nav-main-link-name"><span class="rounded p-1 ">Dashboard</span></span>
-                    </a>
-                </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link active" href="{{route('/')}}">
+                    <i class="nav-main-link-icon si si-speedometer"></i>
+                    <span class="nav-main-link-name"><span class="rounded p-1 ">Dashboard</span></span>
+                </a>
+            </li>
                 
                 <!-- <li class="nav-main-item">
                     <a class="nav-main-link active" href="">
@@ -51,6 +51,20 @@
                     </a>
                 </li> -->
                 <li class="nav-main-item">
+                    <a class="nav-main-link active" href="{{route('supplier.list')}}">
+                        <i class="nav-main-link-icon fas fa-id-card-alt"></i>
+                        <span class="nav-main-link-name"><span class="rounded p-1 ">Suppliers</span></span>
+                    </a>
+                </li>
+                <li class="nav-main-item">
+                    <a class="nav-main-link active" href="{{route('raw.material.list')}}">
+                        <i class="nav-main-link-icon fa fa-file"></i>
+                        <span class="nav-main-link-name"><span class="rounded p-1 ">Raw Materials</span></span>
+                    </a>
+                </li>
+                
+
+                <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                       <i class="nav-main-link-icon fa fa-file"></i>
                         <span class="nav-main-link-name">Stocks</span>
@@ -69,6 +83,8 @@
 
                     </ul>
                 </li>
+
+                {{--
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                       <i class="nav-main-link-icon fa fa-file"></i>
@@ -87,24 +103,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-main-item">
-                    <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                       <i class="nav-main-link-icon fas fa-id-card-alt"></i>
-                        <span class="nav-main-link-name">Supplier</span>
-                    </a>
-                    <ul class="nav-main-submenu">
-                        <!-- <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{route('supplier.index')}}">
-                                <span class="nav-main-link-name">Supplier Create</span>
-                            </a>
-                        </li> -->
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{route('supplier.list')}}">
-                                <span class="nav-main-link-name">Supplier List</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                --}}
+                
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                     <i class="nav-main-link-icon fas fa-id-card-alt"></i>

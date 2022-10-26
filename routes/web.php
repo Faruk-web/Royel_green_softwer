@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductionToProductOutPutController;
 
 
 Route::group(['middleware' => 'auth'], function () {
+
     Route::get('/', [Admincontroller::class, 'dashboard'])->name('/');
     Route::get('/dashboard', [Admincontroller::class, 'dashboard'])->name('dashboard');
     Route::get('/cash-in', [TransactionsController::class, 'create_cash_in'])->name('cash.in');
@@ -41,6 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/material/stock', [RawMaterial::class, 'materialstock'])->name('material.stock');
     Route::get('/material/stock/data', [RawMaterial::class, 'materialstockdata'])->name('material.stock.data');
+    
     //suppliers
     Route::get('/supplier/create', [SupplierController::class, 'index'])->name('supplier.index');
     Route::get('/supplier/list', [SupplierController::class, 'list'])->name('supplier.list');
@@ -76,6 +78,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/material/make/product/submite', [ProductInvoiceController::class, 'material_make_product_submite'])->name('material.make.product.submite');
     Route::get('/material/make/product/list', [ProductInvoiceController::class, 'material_make_product_product_list'])->name('material.make.product.list');
     Route::get('/material/make/product/data', [ProductInvoiceController::class, 'material_make_product_data'])->name('materiak.make.product.data');
+    
     //production to product 
     Route::get('/product/invoice/create', [ProductionToProductController::class, 'create'])->name('invoice.create');
     Route::post('/product/invoice/store', [ProductionToProductController::class, 'invoicestore'])->name('invoice.store');
@@ -100,4 +103,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/production/to/product/data', [ProductionToProductOutPutController::class, 'productiontoproductdata'])->name('production.product.data');
     Route::get('/production/product/stock', [ProductionToProductOutPutController::class, 'productstock'])->name('production.product.stock');
     Route::get('/production/product/stock/data', [ProductionToProductOutPutController::class, 'productstockdata'])->name('production.product.stock.data');
+
+
 });

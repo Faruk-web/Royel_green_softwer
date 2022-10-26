@@ -55,7 +55,7 @@
           <form method="POST" action="{{route('supplier.store')}}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="exampleInputEmail1"><span class="text-danger">*</span>Supplier Name</label>
                             <input type="text" class="form-control" name="supplier_name" value="" placeholder="supplier name" required>
@@ -77,29 +77,19 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="exampleInputEmail1"><span class="text-danger">*</span>Phone</label>
-                            <input type="number" class="form-control" name="phone" value="" placeholder="+88017542055420"  required>
+                            <input type="number" class="form-control" name="phone" value="" placeholder="Ex. 017542055420"  required>
                             @error('company_name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="">Date</label>
-                            <input type="date" class="form-control" name="date" >
-                            @error('logo')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            <img class="shadow rounded" src="" alt="" width="260px">
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Note</label>
-                            <textarea class="form-control" name="note" cols="30" rows="5"></textarea>
+                            <textarea class="form-control" name="note" cols="10" rows="3"></textarea>
                             @error('address')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
