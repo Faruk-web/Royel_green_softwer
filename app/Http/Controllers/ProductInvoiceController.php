@@ -38,6 +38,7 @@ class ProductInvoiceController extends Controller
         return Redirect()->route('product.list')->with('success', 'New Product Added.');
     }
 
+
      //product invoice create
      public function material_product(){
         return view('product.material_make_product');
@@ -149,6 +150,34 @@ class ProductInvoiceController extends Controller
                 ->make(true);
         }
     }
+
+    public function edit_product($id) {
+        $product_info = Product::find($id);
+        return view('product.edit_product', compact('product_info'));
+    }
+
+    public function update_product(Request $request, $id){
+
+        $products = Product::find($id);
+
+        $validator = Validator::make($request->all(), [
+            'product_name' => 'required|unique:products,product_name,'.$products->id,
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $products->product_name = $request->product_name;
+        $products->class = $request->class;
+        $products->size = $request->size;
+        $products->price = $request->price;
+        $products->unit_type = $request->unit_type;
+        $products->save();
+        return Redirect()->route('product.list')->with('success', 'Product Info Updated');
+    }
+    
+
 
     public function material_info_to_make_product($id) {
         $product_info = Product::find($id);

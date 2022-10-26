@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/product/store', [ProductInvoiceController::class, 'productstore'])->name('product.store');
     Route::get('/product/list', [ProductInvoiceController::class, 'product_list'])->name('product.list');
     Route::get('/product/edit/{id}', [ProductInvoiceController::class, 'edit_product'])->name('product.edit');
+    Route::post('/product/update/{id}', [ProductInvoiceController::class, 'update_product'])->name('product.update');
     
     Route::get('/product/list/data', [ProductInvoiceController::class, 'product_list_data'])->name('product.list.data');
     
