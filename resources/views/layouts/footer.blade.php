@@ -13,6 +13,12 @@
         One.helpers(['sparkline']);
     });
 
+    //Begin:: Sidebar Mini
+    function SidebarColpase() {
+        var element = document.getElementById("page-container");
+        element.classList.add("sidebar-mini");
+    }
+    //End:: Sidebar Mini
 </script>
 
 @if(session('success'))

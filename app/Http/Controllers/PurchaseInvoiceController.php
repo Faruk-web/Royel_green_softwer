@@ -17,7 +17,7 @@ class PurchaseInvoiceController extends Controller
         return view('purchase.index');
     }
      //search project start
-     public function search_project(Request $request) {
+     public function search_supplier_for_purchase(Request $request) {
         $output = '';
         $project_info = $request->project_info;
           $projects = Supplier::where(function ($query) use ($project_info) {
@@ -32,7 +32,7 @@ class PurchaseInvoiceController extends Controller
                     $output.='<tr>
                         <td>'.$project->supplier_name.'</td>
                         <td>'.$project->phone.'</td>
-                        <td><button type="button" onclick="setDonerInfo(\''.$project->supplier_name.'\', \''.$project->phone.'\')" class="btn btn-primary btn-sm btn-rounded">Select</button></td>
+                        <td><button type="button" onclick="setSupplierInfo(\''.$project->id.'\', \''.$project->supplier_name.'\', \''.$project->phone.'\')" class="btn btn-primary btn-sm btn-rounded">Select</button></td>
                         </tr>';
                     }
               }
@@ -66,10 +66,12 @@ class PurchaseInvoiceController extends Controller
         return Redirect()->route('purchase.invoice.list')->with('success', 'New Purchase Added');
     }
     // ==========================================================
+    
     //purchase Invoice
     public function purchase_material(){
         return view('purchase.purchase_material');
     }
+
      //search project end
      public function search_doner(Request $request) {
         $output = '';
@@ -128,59 +130,79 @@ class PurchaseInvoiceController extends Controller
         }
         return Response($output);
     }
+
     //first resulation details end
         public function purchase_material_submite(Request $request){
-            // dd($request);
-            $suppliers_id=Supplier::where('supplier_name',$request->supplier_name)->first();
-            $material_info=Material::Where('material_name',$request->material_id)->first();
-            foreach($request->quantity as $key => $item) {
-                $check_raw_materials_stock =RawMaterialStock::where('material_id', $material_info->id)->first();
+            
+            $supplier_id = $request->supplier_id;
+            $supplier_info = Supplier::find($supplier_id);
+
+            $total_invoice = PurchaseInvoice::count('id');
+            $update_count = $total_invoice + 1;
+            $invoice_number = "S".rand(1000, 9999).$update_count;
+            
+            if(is_null($supplier_info)) {
+                return Redirect()->back()->with('error', 'No Supplier Found!');
+            }
+
+            if(is_null($request->material_id)) {
+                return Redirect()->back()->with('error', 'No Materials Found!');
+            }
+
+            $total_gross = 0;
+
+            foreach($request->material_id as $key => $item) {
+                $material_id = $request->material_id[$key];
                 $quantity = $request->quantity[$key];
+                $price = $request->price[$key];
+                $total_price = $request->total_price[$key];
+                
+                $purchase_material=new PurchaseMaterial;
+                $purchase_material->invioce_number = $invoice_number;
+                $purchase_material->quantity = $request->quantity[$key];
+                $purchase_material->price = $price;
+                $purchase_material->total_price	= $total_price;
+                $purchase_material->date = $request->date;
+                $purchase_material->material_id	= $material_id;
+                $purchase_material->supplier_id	= $supplier_id;
+                $purchase_material->save();
+
+
+                $check_raw_materials_stock =RawMaterialStock::where('material_id', $material_id)->first();
+
                 if(!is_null($check_raw_materials_stock)) {
                     $db_stock = $check_raw_materials_stock->stock_quantity;
                     $rests_qty = $db_stock + $quantity ;
-                    $check_raw_materials_stock->stock_quantity =$rests_qty;
+                    $check_raw_materials_stock->stock_quantity = $rests_qty;
                     $check_raw_materials_stock->save();
                 }
                 else {
                     $raw_material_stock =   new RawMaterialStock;
-                    $raw_material_stock->material_id	=$material_info->id;
+                    $raw_material_stock->material_id = $material_id;
                     $raw_material_stock->stock_quantity=$quantity ; 
                     $raw_material_stock->date	=$request->date;
                     $raw_material_stock->save();
-                }      
-        }
-            $supplier_id=Supplier::where('supplier_name',$request->supplier_name)->first();
-            $total_invoice = PurchaseInvoice::count('id');
-            $update_count = $total_invoice + 1;
-            $invoice_number = "S".rand(1000, 9999).$update_count;
-            foreach($request->quantity as $key => $item) {
-            $purchase_material=new PurchaseMaterial;
-            $purchase_material->invioce_number	=$invoice_number;
-            $purchase_material->quantity	=$request->quantity[$key];
-            $purchase_material->price	=$request->price[$key];
-            $purchase_material->total_price	=$request->total_price[$key];
-            $purchase_material->date	=$request->date;
-            $purchase_material->material_id	=$material_info->id;
-            $purchase_material->supplier_id	=$supplier_id->id;
-            $purchase_material->save();
-        }
-            foreach($request->quantity as $key => $item) {
-                $purchase_invoice=new PurchaseInvoice;
-                $purchase_invoice->invioce_number	=$invoice_number;
-                // $purchase_invoice->quantity	=$request->quantity[$key];
-                $purchase_invoice->total_gross	=$request->total_price[$key];
-                $purchase_invoice->date	=$request->date;
-                $purchase_material->date	=$request->note;
-                $purchase_invoice->supplier_id	=$supplier_id->id;
-                $purchase_invoice->save();
+                }  
+                $total_gross = $total_gross + $total_price;   
             }
-        return Redirect()->route('purchase.material.list')->with('success','First Purchase Material Successfully Done');
+            
+            $purchase_invoice=new PurchaseInvoice;
+            $purchase_invoice->invioce_number = $invoice_number;
+            // $purchase_invoice->quantity	=$request->quantity[$key];
+            $purchase_invoice->total_gross = $total_gross;
+            $purchase_invoice->date = $request->date;
+            $purchase_material->date = $request->note;
+            $purchase_invoice->supplier_id = $supplier_id;
+            $purchase_invoice->save();
+            
+        return Redirect()->route('purchase.invoice.list')->with('success','Purchase Material Successfully Done');
     }
+
     //Invoice_list
     public function Invoice_list(){
         return view('purchase.purchase_list');
     }
+
     //data fache for lis
     public function Invoice_list_data(Request $request){
         if ($request->ajax()) {
@@ -188,10 +210,10 @@ class PurchaseInvoiceController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    return '<a href="'.route('raw.material.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">View</a>';
+                    return '<a href="#" class="btn btn-primary btn-sm btn-rounded">View Invoice</a>';
                 })
                 ->addColumn('supplier_name', function($row){
-                    return optional($row->senderSupplierInfo)->supplier_name;
+                    return optional($row->senderSupplierInfo)->supplier_name."<br>".optional($row->senderSupplierInfo)->phone;
                 })
                 ->addColumn('invioce_number', function($row){
                     return $row->invioce_number;
@@ -199,8 +221,11 @@ class PurchaseInvoiceController extends Controller
                 ->addColumn('total_gross', function($row){
                     return $row->total_gross;
                 })
+                ->addColumn('date', function($row){
+                    return date('d-m-Y', strtotime($row->date));
+                })
                 
-                ->rawColumns(['action', 'supplier_name', 'invioce_number','total_gross'])
+                ->rawColumns(['action', 'supplier_name', 'invioce_number','total_gross', 'date'])
                 ->make(true);
         }
       

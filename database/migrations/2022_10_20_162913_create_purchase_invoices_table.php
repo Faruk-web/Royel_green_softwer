@@ -17,7 +17,7 @@ class CreatePurchaseInvoicesTable extends Migration
             $table->id();
             $table->integer('supplier_id');
             $table->string('invioce_number')->nullable();
-            $table->decimal('total_gross')->nullable();
+            $table->string('total_gross')->nullable();
             $table->date('date');
             $table->string('note');
             $table->timestamps();

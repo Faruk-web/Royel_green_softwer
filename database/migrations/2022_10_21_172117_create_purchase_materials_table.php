@@ -18,8 +18,8 @@ class CreatePurchaseMaterialsTable extends Migration
             $table->integer('supplier_id');
             $table->integer('material_id');
             $table->string('invioce_number')->nullable();
-            $table->decimal('price')->nullable();
-            $table->decimal('total_price')->nullable();
+            $table->string('price')->nullable();
+            $table->string('total_price')->nullable();
             $table->date('date');
             $table->string('quantity');
             $table->timestamps();

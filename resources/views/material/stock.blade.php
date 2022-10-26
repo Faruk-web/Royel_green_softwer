@@ -15,10 +15,6 @@
       <div class="col-md-10">
       <h2>Material Stock</h2>
       </div>
-      <div class="col-md-2 text-right">
-        <a style="font-size: 13px;" href="" class="btn btn-primary btn-rounded">Purchase Material</a>
-          <!-- <button type="button" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#exampleModal">Add Material</button> -->
-      </div>
       <div class="row">
           <div class="col-md-12 text-danger">
               @if($errors->any())
@@ -31,10 +27,7 @@
           <thead>
               <tr>
                   <th>Material Name</th>
-                  <th>Unit Type</th>
-                  <th>Price</th>
                   <th>Stock Quantity</th>
-                  <!-- <th>Action</th> -->
               </tr>
           </thead>
           <tbody>
@@ -45,68 +38,7 @@
 </div>
 </body>
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-dark">
-        <h5 class="modal-title text-light" id="exampleModalLabel">Add Doner</h5>
-        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form method="POST" action="{{route('raw.material.store')}}" enctype="multipart/form-data">
-                @csrf
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1"><span class="text-danger">*</span>Material Name</label>
-                            <input type="text" class="form-control" name="material_name" value="" required>
-                            @error('company_name')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Material Type Unit</label>
-                            <input type="text" class="form-control" name="unit_type" >
-                            @error('logo')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            <img class="shadow rounded" src="" alt="" width="260px">
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Price</label>
-                            <input type="text" class="form-control" value="" name="price" >
-                            @error('phone')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Note</label>
-                            <textarea class="form-control" name="note" cols="30" rows="5"></textarea>
-                            @error('address')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group text-right">
-                <button type="submit" class="btn btn-success btn-rounded">Save</button>
-                </div>
-            </form>
-      </div>
-    </div>
-  </div>
-</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
@@ -121,11 +53,8 @@
         serverSide: true,
         ajax: "{{ route('material.stock.data') }}",
         columns: [
-            {data: 'material_id', name: 'material_id'},
-            {data: 'unit_type', name: 'unit_type'},
-            {data: 'price', name: 'price'},
+            {data: 'material_name', name: 'material_name'},
             {data: 'stock_quantity', name: 'stock_quantity'},
-            // {data: 'action', name: 'action'},
         ],
         "scrollY": "300px",
         "pageLength": 50,

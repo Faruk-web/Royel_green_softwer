@@ -104,22 +104,13 @@ class RawMaterial extends Controller
         $data = RawMaterialStock::orderBy('id', 'desc')->get();
         return Datatables::of($data)
             ->addIndexColumn()
-            ->addColumn('action', function($row){
-                return '<a href="'.route('raw.material.list.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded" >Edit</a>';
-            })
-            ->addColumn('material_id', function($row){
+            ->addColumn('material_name', function($row){
                 return optional($row->MaterialInfo)->material_name;
             })
-            ->addColumn('unit_type', function($row){
-                return optional($row->MaterialInfo)->unit_type;
-            })
-            ->addColumn('price', function($row){
-                return optional($row->MaterialInfo)->price;
-            })
             ->addColumn('stock_quantity', function($row){
-                return $row->stock_quantity;
+                return $row->stock_quantity." ".optional($row->MaterialInfo)->unit_type;
             })
-            ->rawColumns(['action', 'material_id', 'stock_quantity','unit_type','price'])
+            ->rawColumns(['material_name', 'stock_quantity'])
             ->make(true);
     }
     

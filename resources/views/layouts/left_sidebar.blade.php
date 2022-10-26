@@ -62,27 +62,46 @@
                         <span class="nav-main-link-name"><span class="rounded p-1 ">Raw Materials</span></span>
                     </a>
                 </li>
+
+                <li class="nav-main-item">
+                    <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+                    <i class="nav-main-link-icon fas fa-id-card-alt"></i>
+                        <span class="nav-main-link-name">Purchase</span>
+                    </a>
+                    <ul class="nav-main-submenu">
+                       <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{route('purchase.material')}}">
+                                <span class="nav-main-link-name">Purcharse Material</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{route('purchase.invoice.list')}}">
+                                <span class="nav-main-link-name">Purcharse Invoice List</span>
+                            </a>
+                        </li> 
+                    </ul>
+                </li>
                 
 
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                      <i class="nav-main-link-icon fa fa-file"></i>
-                        <span class="nav-main-link-name">Stocks</span>
+                      <i class="nav-main-link-icon fa fa-coins"></i>
+                        <span class="nav-main-link-name">Current Stocks</span>
                     </a>
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{route('production.product.stock')}}">
-                                <span class="nav-main-link-name">Product stock</span>
+                            <a class="nav-main-link" href="{{route('material.stock')}}">
+                                <span class="nav-main-link-name">Materials Current stock</span>
                             </a>
                         </li>
                         <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{route('material.stock')}}">
-                                <span class="nav-main-link-name">Material stock</span>
+                            <a class="nav-main-link" href="{{route('production.product.stock')}}">
+                                <span class="nav-main-link-name">Products Current stock</span>
                             </a>
                         </li>
-
                     </ul>
                 </li>
+
 
                 {{--
                 <li class="nav-main-item">
@@ -105,34 +124,7 @@
                 </li>
                 --}}
                 
-                <li class="nav-main-item">
-                    <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                    <i class="nav-main-link-icon fas fa-id-card-alt"></i>
-                        <span class="nav-main-link-name">Purchase</span>
-                    </a>
-                    <ul class="nav-main-submenu">
-                       <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{route('purchase.material')}}">
-                                <span class="nav-main-link-name">Purcharse Material</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{route('purchase.material.list')}}">
-                                <span class="nav-main-link-name">Purcharse Material List</span>
-                            </a>
-                        </li>
-                        <!-- <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{route('purchase.invoice')}}">
-                                <span class="nav-main-link-name">Purcharse Invoice</span>
-                            </a>
-                        </li> -->
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{route('purchase.invoice.list')}}">
-                                <span class="nav-main-link-name">Purcharse Invoice List</span>
-                            </a>
-                        </li> 
-                    </ul>
-                </li>
+                
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                       <i class="nav-main-link-icon fas fa-money-check text-light"></i>

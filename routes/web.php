@@ -55,7 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/purchase/invoice/create', [PurchaseInvoiceController::class, 'Invoice'])->name('purchase.invoice');
     Route::get('/purchase/invoice/list', [PurchaseInvoiceController::class, 'Invoice_list'])->name('purchase.invoice.list');
     Route::get('/purchase/invoice/data', [PurchaseInvoiceController::class, 'Invoice_list_data'])->name('purchase.invoice.data');
-    Route::get('/purchase/invoice/search-project', [PurchaseInvoiceController::class, 'search_project']);
+    Route::get('/purchase/invoice/search-project', [PurchaseInvoiceController::class, 'search_supplier_for_purchase']);
     Route::post('/purchase/invoice/store', [PurchaseInvoiceController::class, 'store'])->name('purchase.store');
     Route::get('/purchase/material/create', [PurchaseInvoiceController::class, 'purchase_material'])->name('purchase.material');
     Route::get('/purchase/material/list', [PurchaseInvoiceController::class, 'purchase_material_list'])->name('purchase.material.list');
