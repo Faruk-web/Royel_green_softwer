@@ -46,18 +46,19 @@ class ProductInvoiceController extends Controller
 
        // search_member
        public function search_material_to_make_product(Request $request) {
+
         $output = '';
-        $member_info = $request->member_info;
-          $members = Material::where(function ($query) use ($member_info) {
-                                $query->where('material_name', 'LIKE', '%'. $member_info. '%')
-                                    ->orWhere('price', 'LIKE', '%'. $member_info. '%');
+        $material_info = $request->material_info;
+          $materials = Material::where(function ($query) use ($material_info) {
+                                $query->where('material_name', 'LIKE', '%'. $material_info. '%')
+                                    ->orWhere('price', 'LIKE', '%'. $material_info. '%');
                             })
                             ->limit(10)
                             ->get(['price', 'material_name', 'id']);
         //  dd($members);
-          if(!empty($member_info)) {
-              if(count($members) > 0) {
-                foreach ($members as $member) {
+          if(!empty($material_info)) {
+              if(count($materials) > 0) {
+                foreach ($materials as $member) {
                     $output.='<div class="col-md-12 p-1">
                                 <div class="shadow row rounded border">
                                     <div class="col-md-12 p-2">
@@ -77,6 +78,7 @@ class ProductInvoiceController extends Controller
     }
         //search project start
         public function make_product(Request $request) {
+            
             $output = '';
             $project_info = $request->project_info;
             $projects = Product::where(function ($query) use ($project_info) {

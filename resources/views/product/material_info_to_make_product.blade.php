@@ -2,7 +2,11 @@
 @section('body_content')
 <div class="content">
     <div class="row">
-        <div class="col-md-8"><h4>Materials for {{$product_info->product_name}} To Make</h4></div>
+        <div class="col-md-8">
+            <h4 class="mb-0">Materials for {{$product_info->product_name}} To Make</h4>
+            <small class="text-danger mb-2">{{$product_info->product_name}} এই প্রোডাক্ট তৈরি করতে যে যে ম্যাটেরিয়াল প্রয়োজন হয়</small>
+        </div>
+
         <div class="col-md-2"></div>
         <div class="col-sm-12 col-xl-12 col-md-12">
             <div class="block block-rounded d-flex flex-column">
@@ -19,10 +23,11 @@
                                     <table class="table table-bordered">
                                         <thead class="bg-dark text-light">
                                             <tr>
-                                                <th> Material Info</th>
-                                                <th> Unit</th>
-                                                <th> Price</th>
-                                                <th> Total price</th>
+                                                <th width="30%">Material Info</th>
+                                                <th>Unit</th>
+                                                <th>Price</th>
+                                                <th>Total price</th>
+                                                <th class="text-center">X</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tbody_output">
@@ -42,11 +47,10 @@
                                 </div>
                             </div>
                             
-                                <div class="col-md-4">
-                                    <label for="">Total Tk:</label>
-                                    <input type="text" class="form-control" id="all_total">
-                                </div>
-                      
+                            <div class="col-md-4">
+                                <label for="">Total Material Cost:</label>
+                                <input type="text" class="form-control" readonly id="all_total">
+                            </div>
                         </div>
                             </div>
                         </div>
@@ -60,7 +64,7 @@
                         <div class="shadow">
                             <div class="form-group shadow rounded p-3">
                                 <label for="example-text-input-alt">Search Materials</label>
-                                <input type="text" class="form-control" id="member_search" placeholder="Search by product name , product cost" name="member_search">
+                                <input type="text" class="form-control" id="material_search_new" placeholder="Search by product name , product cost" name="material_search_new">
                                 <div class="row mt-2 p-3" id="member_show_info">
 
                                 </div>
@@ -78,31 +82,22 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"
 referrerpolicy="no-referrer"></script>
 <script>
-     // Begin:: project Search for
-     $('#project_search').keyup(function () {
-        var project_info = $(this).val();
-        $.ajax({
-            type: 'get',
-            url: '/create/search/material/product',
-            data: {
-                'project_info': project_info
-            },
-            success: function (data) {
-                console.log("Hello world!");
-                $('#project_show_info').html(data);
-            }
-        });
+
+    $(document).ready(function () {
+        SidebarColpase();
     });
+
 </script>
+
 <script>
     // Begin:: members Search for 
-    $('#member_search').keyup(function () {
-        var member_info = $(this).val();
+    $('#material_search_new').keyup(function () {
+        var material_info = $(this).val();
         $.ajax({
             type: 'get',
             url: '/create/search/material',
             data: {
-                'member_info': member_info
+                'material_info': material_info
             },
             success: function (data) {
                 $('#member_show_info').html(data);
@@ -117,17 +112,18 @@ referrerpolicy="no-referrer"></script>
 function setMember(id, material_name, price) {
     var check = $('#material_id_'+id).val();
     if(check) {
-        error("Member is exist.");
+        error("Material is exist.");
     }
     else {
-        const cartDom = `<tr>
+        const cartDom = `<tr id="material_row_`+id+`">
                             <td>
                                 `+material_name+`
-                                <input type="hidden" name="material_id" id="material_id_`+id+`" value="`+id+`" >
+                                <input type="hidden" name="material_id[]" id="material_id_`+id+`" value="`+id+`" >
                             </th>
-                            <td><input class="form-control" type="number" name="unit_amount" id="" value="" step=any></td>
-                            <td><input class="form-control" type="number" name="price" id="" value="`+price+`" step=any></td>
-                            <td><input class="form-control" readonly type="number" name="total_price" id="" value="" step=any></td>
+                            <td><input class="form-control" type="number" required name="amount[]" oninput="change_quantity()" id="" value="" step=any></td>
+                            <td><input class="form-control" type="number" required name="price[]" id="" value="`+price+`" step=any></td>
+                            <td><input class="form-control" readonly type="number" name="total_price[]" id="" value="" step=any></td>
+                            <td><button type="button" onclick="delete_product(`+id+`)" class="mt-2 btn btn-danger btn-sm">X</button></td>
                         </tr>`;
 
         $('#tbody_output').append(cartDom);
@@ -135,8 +131,8 @@ function setMember(id, material_name, price) {
 }
 
 function delete_product(id) {
-    $('#product_column_'+id).remove();
-    success("Product Deleted.");
+    $('#material_row_'+id).remove();
+    success("Material Deleted.");
     multiply();
 }
 
@@ -146,23 +142,20 @@ function setDonerInfo(title, code) {
     $('#modal_close').click();
     success("project Info set Successfully.");
 }
-function qty(id) {
-         multiply();
 
+    function qty(id) {
+        multiply();
     }
 
     function price(id) {
-         multiply();
-
+        multiply();
     }
 
     function multiply() {
 
         var qty = document.querySelectorAll(".qty");
-
         var i, qty = qty.length;
         for (i = 0; i < qty; i++) {
-
             perprice = Number(document.getElementsByClassName('price')[i].value);
             qty = Number(document.getElementsByClassName('qty')[i].value);
             tk = perprice*qty;
@@ -171,16 +164,15 @@ function qty(id) {
 
         }
         function calculateSum() {
-		var final_tk = 0;
-		$(".total").each(function() {
-			if(!isNaN(this.value) && this.value.length!=0) {
-				final_tk += parseFloat(this.value);
-			}
-		});
+            var final_tk = 0;
+            $(".total").each(function() {
+                if(!isNaN(this.value) && this.value.length!=0) {
+                    final_tk += parseFloat(this.value);
+                }
+            });
 
-		$('#all_total').val(final_tk);
-    }
-
+            $('#all_total').val(final_tk);
+        }
     }
 </script>
 @endsection

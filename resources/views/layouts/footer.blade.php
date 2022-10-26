@@ -19,6 +19,22 @@
         element.classList.add("sidebar-mini");
     }
     //End:: Sidebar Mini
+
+    function error(info) {
+        Toastify({
+            text: info,
+            backgroundColor: "linear-gradient(to right, #6E32CF, #FFA300)",
+            className: "error",
+        }).showToast();
+    }
+
+    function success(info) {
+        Toastify({
+            text: info,
+            backgroundColor: "linear-gradient(to right, #269E70, #00BFA6)",
+            className: "success",
+        }).showToast();
+    }
 </script>
 
 @if(session('success'))

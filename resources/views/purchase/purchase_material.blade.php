@@ -220,15 +220,15 @@ function qty(id) {
 
         }
         function calculateSum() {
-		var final_tk = 0;
-		$(".total").each(function() {
-			if(!isNaN(this.value) && this.value.length!=0) {
-				final_tk += parseFloat(this.value);
-			}
-		});
+            var final_tk = 0;
+            $(".total").each(function() {
+                if(!isNaN(this.value) && this.value.length!=0) {
+                    final_tk += parseFloat(this.value);
+                }
+            });
 
-		$('#all_total').val(final_tk);
-    }
+            $('#all_total').val(final_tk);
+        }
 
     }
 
