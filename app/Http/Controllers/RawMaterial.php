@@ -20,13 +20,23 @@ class RawMaterial extends Controller
      public function rawmaterial_update(Request $request, $id)
     {
         $material =Material::find($id);
+
+        $validator = Validator::make($request->all(), [
+            'material_name' => 'required|unique:materials,material_name,'.$material->id,
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $material->material_name = $request->material_name;
         $material->unit_type = $request->unit_type;
         $material->price = $request->price;
         $material->note = $request->note;
         $material->created_at = Carbon::now();
         $material->update();
-        return redirect()->route('raw.material.list')->with('status','Material Updated Successfully');
+        
+        return redirect()->route('raw.material.list')->with('success','Material Updated Successfully');
     }
 
     
@@ -79,38 +89,44 @@ class RawMaterial extends Controller
         $material->created_at = Carbon::now();
         $material->save();
         return Redirect()->back()->with('success', 'New material Added.');
-        
+
     }
 
-        //materialstock
-        public function materialstock(){
-            return view('material.stock');
-        }
-         //list
-       public function materialstockdata(Request $request){
-        if ($request->ajax()) {
-            $data = RawMaterialStock::orderBy('id', 'desc')->get();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    return '<a href="'.route('raw.material.list.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded" >Edit</a>';
-                })
-                ->addColumn('material_id', function($row){
-                    return optional($row->MaterialInfo)->material_name;
-                })
-                ->addColumn('unit_type', function($row){
-                    return optional($row->MaterialInfo)->unit_type;
-                })
-                ->addColumn('price', function($row){
-                    return optional($row->MaterialInfo)->price;
-                })
-                ->addColumn('stock_quantity', function($row){
-                    return $row->stock_quantity;
-                })
-                ->rawColumns(['action', 'material_id', 'stock_quantity','unit_type','price'])
-                ->make(true);
-        }
-      
+    //materialstock
+    public function materialstock(){
+        return view('material.stock');
     }
+
+
+    //list
+    public function materialstockdata(Request $request){
+    if ($request->ajax()) {
+        $data = RawMaterialStock::orderBy('id', 'desc')->get();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                return '<a href="'.route('raw.material.list.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded" >Edit</a>';
+            })
+            ->addColumn('material_id', function($row){
+                return optional($row->MaterialInfo)->material_name;
+            })
+            ->addColumn('unit_type', function($row){
+                return optional($row->MaterialInfo)->unit_type;
+            })
+            ->addColumn('price', function($row){
+                return optional($row->MaterialInfo)->price;
+            })
+            ->addColumn('stock_quantity', function($row){
+                return $row->stock_quantity;
+            })
+            ->rawColumns(['action', 'material_id', 'stock_quantity','unit_type','price'])
+            ->make(true);
+    }
+    
+}
+
+
+
+
 
 }
