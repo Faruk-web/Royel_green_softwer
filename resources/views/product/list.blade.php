@@ -13,7 +13,7 @@
     <div class="container p-4">
     <div class="row shadow rounded bg-light" style="padding-top:20px">
       <div class="col-md-10">
-      <h2>Product List</h2>
+      <h2>All Products</h2>
       </div>
       <div class="col-md-2 text-right">
         <a style="font-size: 13px;" href="{{route('product.create')}}" class="btn btn-primary btn-rounded">Add Product</a>
@@ -33,7 +33,7 @@
                   <th>Product Name</th>
                   <th>Unit Type</th>
                   <th>Size</th>
-                  <th>Price</th>
+                  <th>Selling Price</th>
                   <th>Action</th>
               </tr>
           </thead>
@@ -44,69 +44,8 @@
     </div>
 </div>
 </body>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-dark">
-        <h5 class="modal-title text-light" id="exampleModalLabel">Add Doner</h5>
-        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form method="POST" action="{{route('raw.material.store')}}" enctype="multipart/form-data">
-                @csrf
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1"><span class="text-danger">*</span>Material Name</label>
-                            <input type="text" class="form-control" name="material_name" value="" required>
-                            @error('company_name')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Material Type Unit</label>
-                            <input type="text" class="form-control" name="unit_type" >
-                            @error('logo')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            <img class="shadow rounded" src="" alt="" width="260px">
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Price</label>
-                            <input type="text" class="form-control" value="" name="price" >
-                            @error('phone')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Note</label>
-                            <textarea class="form-control" name="note" cols="30" rows="5"></textarea>
-                            @error('address')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group text-right">
-                <button type="submit" class="btn btn-success btn-rounded">Save</button>
-                </div>
-            </form>
-      </div>
-    </div>
-  </div>
-</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>

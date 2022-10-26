@@ -6,6 +6,7 @@ use App\Models\Material;
 use App\Models\MaterialInfoToMakeProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Validator;
 use DataTables;
 class ProductInvoiceController extends Controller
 {
@@ -13,23 +14,35 @@ class ProductInvoiceController extends Controller
     public function create(){
         return view('product.index');
     }
+
     public function productstore(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'product_name' => 'required|unique:products',            
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $products = new Product;
         $products->product_name = $request->product_name;
         $products->class = $request->class;
         $products->size = $request->size;
-        $products->date = $request->date;
-        $products->production_cost = $request->production_cost;
+        $products->date = Carbon::now();
         $products->price = $request->price;
+        $products->production_cost = 0;
         $products->unit_type = $request->unit_type;
         $products->created_at = Carbon::now();
         $products->save();
         return Redirect()->route('product.list')->with('success', 'New Product Added.');
     }
+
      //product invoice create
      public function material_product(){
         return view('product.material_make_product');
     }
+
        // search_member
        public function search_material_to_make_product(Request $request) {
         $output = '';
@@ -116,7 +129,7 @@ class ProductInvoiceController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    return '<a href="'.route('raw.material.edit', $row->id).'"  class="btn btn-info btn-sm btn-rounded">Edit</a> <a type="button" href="'.route('material.info.to.make.product', $row->id).'" class="btn btn-success btn-sm btn-rounded">Material Info to make product</a>';
+                    return '<a href="'.route('product.edit', $row->id).'"  class="btn btn-info btn-sm btn-rounded">Edit</a> <a type="button" href="'.route('material.info.to.make.product', $row->id).'" class="btn btn-success btn-sm btn-rounded">Material Info to make product</a>';
                 })
                 
                 ->addColumn('product_name', function($row){

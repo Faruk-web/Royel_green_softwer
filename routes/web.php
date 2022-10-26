@@ -68,6 +68,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/material/make/product/create', [ProductInvoiceController::class, 'material_product'])->name('material.make.product');
     Route::post('/product/store', [ProductInvoiceController::class, 'productstore'])->name('product.store');
     Route::get('/product/list', [ProductInvoiceController::class, 'product_list'])->name('product.list');
+    Route::get('/product/edit/{id}', [ProductInvoiceController::class, 'edit_product'])->name('product.edit');
+    
     Route::get('/product/list/data', [ProductInvoiceController::class, 'product_list_data'])->name('product.list.data');
     
     Route::get('/product/material-info-to-make-product/{id}', [ProductInvoiceController::class, 'material_info_to_make_product'])->name('material.info.to.make.product');
