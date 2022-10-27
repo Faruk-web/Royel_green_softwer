@@ -10,10 +10,12 @@ use Illuminate\Http\Request;
 use DataTables;
 class ProductionToProductOutPutController extends Controller
 {
+    
     //productiontoproduct 
     public function productiontoproduct(){
         return view('production.index');
     }
+
     // ==============================================================
     //search Product
     public function productsearch(Request $request) {

@@ -96,11 +96,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/production/material/store', [ProductionToProductController::class, 'production_material_store'])->name('production.material.store');
     Route::get('/make-production', [ProductionToProductController::class, 'make_production'])->name('production.material');
     Route::get('make-production/search_materials', [ProductionToProductController::class, 'search_materials_for_production']);
-
     Route::get('/production/material/list', [ProductionToProductController::class, 'productionmateriallist'])->name('production.material.list');
-    
     Route::get('/production/material/data', [ProductionToProductController::class, 'production_material_data'])->name('production.material.data');
+    Route::get('/production-invoice/{invoice_number}/view', [ProductionToProductController::class, 'production_invoice_view'])->name('production.invoice.view');
 
+    // Production to make product
+    Route::get('/production/{id}/make-product', [ProductionToProductController::class, 'production_to_make_product'])->name('production.to.make.product');
+    
     //
     Route::get('/production/to/product', [ProductionToProductOutPutController::class, 'productiontoproduct'])->name('production.product');
     Route::get('/search/product', [ProductionToProductOutPutController::class, 'productsearch']);

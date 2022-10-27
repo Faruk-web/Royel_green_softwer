@@ -47,17 +47,22 @@ class ProductionToProductController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    return '<a href="'.route('invoice.list.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">edit</a>';
+                    return '<a href="'.route('production.invoice.view', [$row->invioce_number]).'"  class="btn btn-primary btn-sm btn-rounded">Invoice</a> <a href="'.route('production.to.make.product', [$row->id]).'"  class="btn btn-success btn-sm btn-rounded">Make Product</a>';
                 })
                 
                 ->addColumn('date', function($row){
                     return date("d-m-Y", strtotime($row->date));
                 })
                 ->addColumn('total_cost', function($row){
-                    return $row->total_cost;
+                    return number_format($row->total_cost, 2);
                 })
                 ->addColumn('status', function($row){
-                    return $row->status;
+                    if($row->status == 'processing') {
+                        return '<span class="badge badge-pill badge-danger">Processing</span>';
+                    }
+                    else if($row->status == 'complete') {
+                        return '<span class="badge badge-pill badge-success">Complete</span>';
+                    }
                 })
                 
                 ->rawColumns(['action', 'date', 'total_cost','status'])
@@ -68,6 +73,18 @@ class ProductionToProductController extends Controller
        public function production_material(){
         return view('invoice.production_material_create');
     }
+
+    //productiontoproduct 
+    public function production_to_make_product($id){
+        $production_invoice = ProductInvoice::find($id);
+        if(is_null($production_invoice)) {
+            return Redirect()->back()->with('error', 'No Production invoice found!!!');
+        }
+        
+        return view('production.production_to_make_product', compact('production_invoice'));
+    }
+
+
      //search project end
      public function search_doner(Request $request) {
         $output = '';
