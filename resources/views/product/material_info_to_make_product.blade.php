@@ -1,5 +1,10 @@
 @extends('layouts.app')
 @section('body_content')
+@php
+
+    $total_cost = 0;
+
+@endphp
 <div class="content">
     <div class="row">
         <div class="col-md-8">
@@ -19,7 +24,7 @@
                             <div class="row">
                                <div class="col-md-12">
                                     <div class="form-group">
-                                   <div id="selected_members" class="row p-3">
+                                   <div id="selected_members" class="row p-2">
                                     <table class="table table-bordered">
                                         <thead class="bg-dark text-light">
                                             <tr>
@@ -32,31 +37,39 @@
                                         </thead>
                                         <tbody id="tbody_output">
                                             @foreach($materials_info as $material)
-                                            <tr>
+                                            @php
+                                                $total_price = optional($material->MaterialInfo)->price * $material->unit_amount;
+                                                $total_cost = $total_cost + $total_price;
+                                            @endphp
+                                            <tr id="material_row_{{$material->material_id}}">
                                                 <td>
-                                                    {{$material->MaterialInfo->material_name}}
-                                                    <input type="hidden" name="material_id" id="material_id_{{$material->MaterialInfo->id}}" value="{{$material->MaterialInfo->id}}" >
-                                                </th>
-                                                <td><input class="form-control" type="number" name="unit_amount" id="" value="{{$material->unit_amount}}" step=any></td>
-                                                <td><input class="form-control" type="number" name="price" id="" value="{{$material->price}}" step=any></td>
-                                                <td><input class="form-control" type="number" name="total_price" id="" value="{{$material->total_price}}" step=any></td>
+                                                    {{optional($material->MaterialInfo)->material_name}}
+                                                    <input type="hidden" name="material_id[]" id="material_id_{{$material->material_id}}" value="{{$material->material_id}}">
+                                                </td>
+                                                <td><input class="form-control qty" type="number" required="" name="quantity[]" oninput="change_quantity()" id="" value="{{$material->unit_amount}}" step="any">{{optional($material->MaterialInfo)->unit_type}}</td>
+                                                <td><input class="form-control price" type="number" required="" readonly name="price[]" id="" value="{{optional($material->MaterialInfo)->price}}" step="any"></td>
+                                                <td><input class="form-control total" readonly="" type="number" name="total_price[]" id="" value="{{$total_price}}" step="any"></td>
+                                                <td><button type="button" onclick="delete_product({{$material->material_id}})" class="mt-2 btn btn-danger btn-sm">X</button></td>
                                             </tr>
+
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                             
-                            <div class="col-md-4">
-                                <label for="">Total Material Cost:</label>
-                                <input type="text" class="form-control" readonly id="all_total">
-                            </div>
                         </div>
-                            </div>
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                            <label for="">Total Material Cost</label>
+                            <input type="text" class="form-control" readonly id="all_total" value="{{$total_cost}}">
+                            <input type="hidden" name="product_id" value="{{$product_info->id}}">
+                        </div>
+                        </div>
                         </div>
                         <div class="shadow rounded p-2">
                             <div class="form-group text-right">
-                                <button type="submit" class="btn btn-success">Update</button>
+                                <button type="submit" class="btn btn-success">Save</button>
                             </div>
                         </div>
                     </div>
@@ -109,7 +122,7 @@ referrerpolicy="no-referrer"></script>
 
 <script>
 
-function setMember(id, material_name, price) {
+function setMember(id, material_name, price, unit_type) {
     var check = $('#material_id_'+id).val();
     if(check) {
         error("Material is exist.");
@@ -120,9 +133,9 @@ function setMember(id, material_name, price) {
                                 `+material_name+`
                                 <input type="hidden" name="material_id[]" id="material_id_`+id+`" value="`+id+`" >
                             </th>
-                            <td><input class="form-control" type="number" required name="amount[]" oninput="change_quantity()" id="" value="" step=any></td>
-                            <td><input class="form-control" type="number" required name="price[]" id="" value="`+price+`" step=any></td>
-                            <td><input class="form-control" readonly type="number" name="total_price[]" id="" value="" step=any></td>
+                            <td><input class="form-control qty" type="number" required name="quantity[]" oninput="change_quantity()" id="" value="" step=any> `+unit_type+`</td>
+                            <td><input class="form-control price" type="number" required name="price[]" id="" readonly value="`+price+`" step=any></td>
+                            <td><input class="form-control total" readonly type="number" name="total_price[]" id="" value="" step=any></td>
                             <td><button type="button" onclick="delete_product(`+id+`)" class="mt-2 btn btn-danger btn-sm">X</button></td>
                         </tr>`;
 
@@ -143,7 +156,7 @@ function setDonerInfo(title, code) {
     success("project Info set Successfully.");
 }
 
-    function qty(id) {
+    function change_quantity(id) {
         multiply();
     }
 
@@ -155,6 +168,7 @@ function setDonerInfo(title, code) {
 
         var qty = document.querySelectorAll(".qty");
         var i, qty = qty.length;
+
         for (i = 0; i < qty; i++) {
             perprice = Number(document.getElementsByClassName('price')[i].value);
             qty = Number(document.getElementsByClassName('qty')[i].value);
@@ -171,7 +185,7 @@ function setDonerInfo(title, code) {
                 }
             });
 
-            $('#all_total').val(final_tk);
+            $('#all_total').val(final_tk.toFixed(2));
         }
     }
 </script>

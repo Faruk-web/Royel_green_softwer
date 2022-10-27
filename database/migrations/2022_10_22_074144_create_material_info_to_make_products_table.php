@@ -17,10 +17,10 @@ class CreateMaterialInfoToMakeProductsTable extends Migration
             $table->id();
             $table->integer('material_id');
             $table->integer('product_id');
-            $table->decimal('unit_amount');
-            $table->decimal('price');
-            $table->decimal('total_price');
-            $table->date('date');
+            $table->string('unit_amount')->nullable();
+            $table->string('price')->nullable();
+            $table->string('total_price')->nullable();
+            $table->date('date')->nullable();
             $table->timestamps();
         });
     }

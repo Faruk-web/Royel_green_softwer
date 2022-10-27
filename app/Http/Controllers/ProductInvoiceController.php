@@ -54,7 +54,7 @@ class ProductInvoiceController extends Controller
                                     ->orWhere('price', 'LIKE', '%'. $material_info. '%');
                             })
                             ->limit(10)
-                            ->get(['price', 'material_name', 'id']);
+                            ->get(['price', 'material_name', 'id', 'unit_type']);
         //  dd($members);
           if(!empty($material_info)) {
               if(count($materials) > 0) {
@@ -64,7 +64,7 @@ class ProductInvoiceController extends Controller
                                     <div class="col-md-12 p-2">
                                         <h5 class="m-0">'.$member->material_name.'</h5>
                                         <span>'.$member->price.'</span><br>
-                                        <button type="button" onclick="setMember('.$member->id.', \''.$member->material_name.'\', \''.$member->price.'\')" class="mt-2 btn btn-success btn-sm btn-block btn-rounded">Select</button>
+                                        <button type="button" onclick="setMember('.$member->id.', \''.$member->material_name.'\', \''.$member->price.'\', \''.$member->unit_type.'\')" class="mt-2 btn btn-success btn-sm btn-block btn-rounded">Select</button>
                                     </div>
                                 </div>
                             </div>';
@@ -104,23 +104,40 @@ class ProductInvoiceController extends Controller
             return Response($output);
         }
     //first resulation details end
+
     public function material_make_product_submite(Request $request){
-        // dd($request);
-        $material_id=Material::where('material_name',$request->material_name)->first();
-        // dd($material_id);
-        $product_id=Product::where('product_name',$request->product_id)->first();
-        foreach($request->quantity as $key => $item) {
-        $purchase_material=new MaterialInfoToMakeProduct;
-        $purchase_material->unit_amount	=0;
-        $purchase_material->price	=$request->price[$key];
-        $purchase_material->total_price	=$request->total_price[$key];
-        $purchase_material->date	=$request->date;
-        $purchase_material->material_id	=$material_id->id;
-        $purchase_material->product_id	=$product_id->id;
-        $purchase_material->save();
+        
+        $product_id = $request->product_id;
+        
+        if(is_null($request->material_id) || is_null($product_id)) {
+            return Redirect()->back()->with('error', 'No Materials Found!');
+        }
+
+        $materials_info = MaterialInfoToMakeProduct::where('product_id', $product_id)->get();
+        foreach($materials_info as $old_material) {
+            $old_material->delete();
+        }
+        
+
+        foreach($request->material_id as $key => $item) {
+
+            $material_id = $request->material_id[$key];
+            $quantity = $request->quantity[$key];
+
+            $material_info=new MaterialInfoToMakeProduct;
+            $material_info->unit_amount	= $quantity;
+            $material_info->price = 0;
+            $material_info->total_price	= 0;
+            $material_info->date = Carbon::now();
+            $material_info->material_id	= $material_id;
+            $material_info->product_id = $product_id;
+            $material_info->save();
+
+        }
+
+        return Redirect()->route('product.list')->with('success', 'Material info for make product updated.');
+
     }
-    return Redirect()->route('material.make.product.list')->with('success','First Purchase Material Successfully Done');
-}
     //product_list
     public function product_list(){
         return view('product.list');
