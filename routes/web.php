@@ -92,7 +92,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/create/search-doner', [ProductionToProductController::class, 'search_doner']);
    
     Route::post('/production/material/store', [ProductionToProductController::class, 'production_material_store'])->name('production.material.store');
-    Route::get('/production/material', [ProductionToProductController::class, 'productionmaterial'])->name('production.material');
+    Route::get('/make-production', [ProductionToProductController::class, 'make_production'])->name('production.material');
     Route::get('/production/material/list', [ProductionToProductController::class, 'productionmateriallist'])->name('production.material.list');
     Route::get('/search_product', [ProductionToProductController::class, 'search_product']);
     Route::get('/production/material/data', [ProductionToProductController::class, 'production_material_data'])->name('production.material.data');

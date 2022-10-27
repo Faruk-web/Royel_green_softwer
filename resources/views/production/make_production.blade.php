@@ -11,52 +11,48 @@
                 @csrf
                     <div class="row">
                         <div class="col-md-8 p-1">
-                        <div class=" p-3 shadow">
-                                <h4 class="m-0">Prasence Production Material =></h4>
-                                <div  class="row p-3">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th >Name</th>
-                                        <th >Qty</th>
-                                        <th >Per Price</th>
-                                        <th >Total</th>
-                                        <th >Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="selected_products"></tbody>
-
-                        </table>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-8"></div>
-                                <div class="col-md-4">
-                                    <label for="">Total Tk:</label>
-                                    <input type="hidden" class="form-control" name="invioce_number" value="">
-                                    <input type="text" class="form-control" id="all_total" readonly>
-                                </div>
-                            </div>
-                            <label for="">Date</label>
-                            <input type="date" name="date" class="form-control" id="all_total">
+                            <div class="shadow p-2">
+                                <h4 class="m-0">Make Production</h4>
+                                <table class="table table-bordered">
+                                    <thead class="bg-dark text-light">
+                                        <tr>
+                                            <th width="30%">Name</th>
+                                            <th>Qty</th>
+                                            <th>Per Price</th>
+                                            <th>Total</th>
+                                            <th>X</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="selected_products"></tbody>
+                                </table>
+                            
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Note</label>
-                                        <textarea class="form-control" name="note" cols="30" rows="5" value=""></textarea>
-                                        @error('address')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                <div class="col-md-8"></div>
+                                    <div class="col-md-4">
+                                        <label for="">Total Tk:</label>
+                                        <input type="hidden" class="form-control" name="invioce_number" value="">
+                                        <input type="text" class="form-control" id="all_total" readonly>
                                     </div>
                                 </div>
-                            </div>
-                        <div class="" style="padding-top:10px">
-                            <div class="form-group text-right">
-                             <button type="submit" class="btn btn-success">Submit</button>
+                                <label for="">Date</label>
+                                <input type="date" name="date" class="form-control" id="all_total">
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Note</label>
+                                            <textarea class="form-control" name="note" cols="30" rows="5" value=""></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="" style="padding-top:10px">
+                                <div class="form-group text-right">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                         </div>
-                       <div class="col-md-4 p-1">
+                       </div>
+                       <div class="col-md-4">
                             
                             <div class="shadow">
                                 <div class="form-group shadow rounded p-3">

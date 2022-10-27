@@ -225,9 +225,11 @@ class ProductionToProductController extends Controller
         }
         return Response($output);
     }
-    public function productionmaterial(){
-        return view('invoice.list');
+
+    public function make_production(){
+        return view('production.make_production');
     }
+
     public function productionmateriallist(){
         return view('invoice.production_materiak_list');
     }
