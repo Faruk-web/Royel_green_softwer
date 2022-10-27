@@ -31,7 +31,7 @@
               <tr>
                   <th>Date</th>
                   <th>Invoice</th>
-                  <th>Total Cost</th>
+                  <th>Materials Cost</th>
                   <th>status</th>
                   <th>Action</th>
               </tr>

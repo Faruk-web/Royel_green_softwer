@@ -102,12 +102,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Production to make product
     Route::get('/production/{id}/make-product', [ProductionToProductController::class, 'production_to_make_product'])->name('production.to.make.product');
-    
+    Route::get('/search/product', [ProductionToProductOutPutController::class, 'productsearch_for_production_to_product_output']);
+    Route::post('/production/to/product/store', [ProductionToProductOutPutController::class, 'productiontoproductstore'])->name('production.product.store');
     //
     Route::get('/production/to/product', [ProductionToProductOutPutController::class, 'productiontoproduct'])->name('production.product');
-    Route::get('/search/product', [ProductionToProductOutPutController::class, 'productsearch']);
+    
     Route::get('/search//raw/material', [ProductionToProductOutPutController::class, 'rawmaterialsearch']);
-    Route::post('/production/to/product/store', [ProductionToProductOutPutController::class, 'productiontoproductstore'])->name('production.product.store');
+    
     Route::get('/production/to/product/list', [ProductionToProductOutPutController::class, 'productiontoproductlist'])->name('production.product.list');
     Route::get('/production/to/product/data', [ProductionToProductOutPutController::class, 'productiontoproductdata'])->name('production.product.data');
     Route::get('/production/product/stock', [ProductionToProductOutPutController::class, 'productstock'])->name('production.product.stock');

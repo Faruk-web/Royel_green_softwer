@@ -18,10 +18,8 @@
                                 <table class="table table-bordered">
                                     <thead class="bg-success text-light">
                                     <tr>
-                                        <th>Product Name</th>
+                                        <th width="60%">Product Name</th>
                                         <th>QTY</th>
-                                        <th>Production Cost</th>
-                                        <th>Total Cost</th>
                                         <th>X</th>
                                     </tr>
                                 </thead>
@@ -31,12 +29,25 @@
                         </div>
                        
                             <label for="">Date</label>
-                            <input type="date" name="date" class="form-control" id="date">
+                            <input type="date" name="date" class="form-control" value="{{ date('Y-m-d') }}" id="date">
+
                             <div class="" style="padding-top:10px">
-                            <div class="form-group text-right">
-                             <button type="submit" class="btn btn-success">Submit</button>
+                                <div class="form-group text-right">
+                                    <input type="hidden" name="invoice_number" value="{{$production_invoice->invioce_number}}">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
                             </div>
-                        </div>
+
+                            <div class="p-2">
+                                <div class="shadow rounded border p-2">
+                                    <h4 class="m-0">Previous Make Product <span class="text-primary">for Invoice: {{$production_invoice->invioce_number}}</span> </h4>
+                                    {{$production_invoice->production_to_product_output}}
+                                </div>
+                                
+                            </div>
+
+
+
                     </div>
                          </div>
                        <div class="col-md-4 p-1">
@@ -64,6 +75,13 @@
 referrerpolicy="no-referrer"></script>
 
 <script>
+
+    $(document).ready(function () {
+        SidebarColpase();
+    });
+
+
+
     // Begin:: doner Search for
     $('#doner_search').keyup(function () {
         var doner_info = $(this).val();
@@ -107,18 +125,15 @@ function setMember(id, name, phone, type) {
     else {
         const cartDom = `
             <tr id="product_column_`+id+`">
-            <td><input type="text" class="form-control" name="product_id[]" id="product_id_`+id+`" value="`+name+`" readonly>
-            <td><input type="hidden" name="invioce_number[]" id="product_id_`+id+`" value="`+id+`">
-            <input type="number" class="form-control qty"  name="quantity[]" oninput="qty(`+id+`)" value="" id="qty`+id+`" ></td>
-            <td> <input type="number" class="form-control price" name="product_cost[]" oninput="price(`+id+`)" value="" id="price`+id+`" ></td>
-            <td> <input type="number" class="form-control total" name="total_production[]" value="0" id="total`+id+`" readonly></td>
+            <td>`+name+`</td>
+            <td>
+                <input type="hidden" name="product_id[]" id="product_id_`+id+`" value="`+id+`">
+                <input type="number" class="form-control qty" step=any required name="quantity[]" oninput="qty(`+id+`)" value="" id="qty`+id+`" >
+            </td>
             <td><button type="button" onclick="delete_product(`+id+`)" class="mt-2 btn btn-danger btn-sm">X</button></td>
-            </tr>
-            `;
+            </tr>`;
 
         $('#selected_products').append(cartDom);
-        $('#product_show_info').html('');
-        $('#product_search').val('');
         success("product Added.");
     }
 }

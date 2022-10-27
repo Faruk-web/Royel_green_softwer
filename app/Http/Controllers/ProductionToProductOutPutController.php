@@ -7,6 +7,7 @@ use App\Models\ProductStock;
 use App\Models\ProductInvoice;
 use App\Models\ProductionToProductOutput;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use DataTables;
 class ProductionToProductOutPutController extends Controller
 {
@@ -18,7 +19,7 @@ class ProductionToProductOutPutController extends Controller
 
     // ==============================================================
     //search Product
-    public function productsearch(Request $request) {
+    public function productsearch_for_production_to_product_output(Request $request) {
         $output = '';
         $product_info = $request->product_info;
           $products = Product::where(function ($query) use ($product_info) {
@@ -26,7 +27,7 @@ class ProductionToProductOutPutController extends Controller
     
                             })
                             ->limit(10)
-                            ->get(['product_name', 'unit_type', 'id']);
+                            ->get(['product_name', 'unit_type', 'id', 'size']);
     
           if(!empty($product_info)) {
               if(count($products) > 0) {
@@ -34,7 +35,7 @@ class ProductionToProductOutPutController extends Controller
                 <thead>
                     <tr>
                         <th scope="col">product_name</th>
-                        <th scope="col">Unit Type</th>
+                        <th scope="col">Size</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -43,15 +44,14 @@ class ProductionToProductOutPutController extends Controller
     
                     $output.='<tr>'.
                     '<td>
-                 ' .$product->product_name.'
+                        '.$product->product_name.'
                     </td>'.
                     '<td>
-    
-                 ' .$product->unit_type.'
+                        '.$product->size.'
                     </td>'.
-                    '<td>  <button type="button" onclick="setMember('.$product->id.', \''.$product->product_name.'\', \''.$product->unit_type.'\')" class="mt-2 btn btn-success btn-sm btn-block btn-rounded">Select</button></td>'.
-    
-                        '</tr>';
+                    '<td>  
+                        <button type="button" onclick="setMember('.$product->id.', \''.$product->product_name.'\', \''.$product->unit_type.'\')" class="mt-2 btn btn-success btn-sm btn-block btn-rounded">Select</button></td>'.
+                    '</tr>';
                     }
                 $output .= '</tbody>
             </table>';
@@ -119,32 +119,45 @@ class ProductionToProductOutPutController extends Controller
         //first resulation details end
         public function productiontoproductstore(Request $request){
             // dd($request);
-            $product_id=Product::Where('product_name',$request->product_id)->first();
+            //$product_id=Product::Where('product_name',$request->product_id)->first();
+
+            if(is_null($request->product_id)) {
+                return Redirect()->back()->with('error', 'No Products Found!');
+            }
+
+            $invoice_number = $request->invoice_number;
+
             foreach($request->product_id as $key => $item) {
-            $raw_material_stock =   new ProductStock;
-            $total_stocks = ProductStock::sum('stock_quantity');
-            $stock_quantitys = ($total_stocks+$request->quantity[$key]);
-            $raw_material_stock->product_id	=$product_id->id;
-            $raw_material_stock->stock_quantity=$stock_quantitys;
-            $raw_material_stock->date	=$request->date;
-            $raw_material_stock->save();
-        }
-        $product_id=Product::Where('product_name',$request->product_id)->first();
-            $total_invoice = ProductInvoice::count('id');
-            $update_count = $total_invoice + 1;
-            $invoice_number = "P".rand(1000, 9999).$update_count;
-            foreach($request->product_id as $key => $item) {
-            $purchase_material=new ProductionToProductOutput;
-            // $purchase_material->product_id	=$request->product_id[$key];
-            $purchase_material->invioce_number	=$invoice_number;
-            $purchase_material->quantity	=$request->quantity[$key];
-            $purchase_material->product_cost	=$request->product_cost[$key];
-            $purchase_material->total_production	=$request->total_production[$key];
-            $purchase_material->date	=$request->date;
-            $purchase_material->product_id	=$product_id->id;
-            $purchase_material->save();
-        }
-        return back()->with('success','First Purchase Material Successfully Done');
+                $product_id = $request->product_id[$key];
+                $quantity = $request->quantity[$key];
+
+                $product_output = new ProductionToProductOutput;
+                // $purchase_material->product_id	=$request->product_id[$key];
+                $product_output->invioce_number = $invoice_number;
+                $product_output->quantity = $quantity;
+                $product_output->product_cost = 0;
+                $product_output->total_production = 0;
+                $product_output->date = $request->date;
+                $product_output->product_id = $product_id;
+                $product_output->save();
+
+                $check_product_stock = ProductStock::where('product_id', $product_id)->first();
+                
+                if(!is_null($check_product_stock)) {
+                    $updated_stock = (($check_product_stock->stock_quantity) + 0) + $quantity;
+                    $check_product_stock->stock_quantity = $updated_stock;
+                    $check_product_stock->update();
+                }
+                else {
+                    $product_stock =  new ProductStock;
+                    $product_stock->product_id = $product_id;
+                    $product_stock->stock_quantity = $quantity;
+                    $product_stock->date = Carbon::now();
+                }
+            }
+
+        return back()->with('success', 'Production to product added.');
+
     }
         //productiontoproductlist
         public function productiontoproductlist(){
