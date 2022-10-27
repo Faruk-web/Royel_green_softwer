@@ -62,6 +62,7 @@ class ProductionToProductOutPutController extends Controller
         }
         return Response($output);
     }
+    
     //search raw material
     public function rawmaterialsearch(Request $request) {
         $output = '';

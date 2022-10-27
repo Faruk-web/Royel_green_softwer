@@ -63,7 +63,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/purchase/material/submite', [PurchaseInvoiceController::class, 'purchase_material_submite'])->name('purchase.material.submite');
     Route::get('/search_member', [PurchaseInvoiceController::class, 'search_member']);
     Route::get('/create/search-doner', [PurchaseInvoiceController::class, 'search_doner']);
-    //product invoice
+    
+    //product
     Route::get('/product/create', [ProductInvoiceController::class, 'create'])->name('product.create');
     Route::get('/material/make/product/create', [ProductInvoiceController::class, 'material_product'])->name('material.make.product');
     Route::post('/product/store', [ProductInvoiceController::class, 'productstore'])->name('product.store');
@@ -83,7 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/material/make/product/data', [ProductInvoiceController::class, 'material_make_product_data'])->name('materiak.make.product.data');
     
     //production to product 
-    Route::get('/product/invoice/create', [ProductionToProductController::class, 'create'])->name('invoice.create');
+    Route::get('/production/invoices', [ProductionToProductController::class, 'production_invoices'])->name('production.invoices');
     Route::post('/product/invoice/store', [ProductionToProductController::class, 'invoicestore'])->name('invoice.store');
     Route::get('/product/invoice/list/data', [ProductionToProductController::class, 'invoicelistdata'])->name('invoice.list.data');
     Route::get('/product/invoice/list/edit/{id}', [ProductionToProductController::class, 'invoicelistedit'])->name('invoice.list.edit');
@@ -91,10 +92,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/search_member', [ProductionToProductController::class, 'search_member']);
     Route::get('/create/search-doner', [ProductionToProductController::class, 'search_doner']);
    
+    //Production
     Route::post('/production/material/store', [ProductionToProductController::class, 'production_material_store'])->name('production.material.store');
     Route::get('/make-production', [ProductionToProductController::class, 'make_production'])->name('production.material');
+    Route::get('make-production/search_materials', [ProductionToProductController::class, 'search_materials_for_production']);
+
     Route::get('/production/material/list', [ProductionToProductController::class, 'productionmateriallist'])->name('production.material.list');
-    Route::get('/search_product', [ProductionToProductController::class, 'search_product']);
+    
     Route::get('/production/material/data', [ProductionToProductController::class, 'production_material_data'])->name('production.material.data');
 
     //

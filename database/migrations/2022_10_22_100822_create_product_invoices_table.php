@@ -18,7 +18,7 @@ class CreateProductInvoicesTable extends Migration
             $table->string('invioce_number');
             $table->decimal('total_cost');
             $table->string('status');
-            $table->string('note');
+            $table->string('note')->nullable();
             $table->date('date');
             $table->timestamps();
         });

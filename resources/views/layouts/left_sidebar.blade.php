@@ -131,22 +131,13 @@
                                 <span class="nav-main-link-name">Production Material</span>
                             </a>
                         </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{route('production.material.list')}}">
-                                <span class="nav-main-link-name">Production Material List</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{route('invoice.create')}}">
-                                <span class="nav-main-link-name">Production Invoice List</span>
-                            </a>
-                        </li>
-                        <!-- <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{route('production.material.create')}}">
-                                <span class="nav-main-link-name">Production Material List2</span>
-                            </a>
-                        </li> -->
                         
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{route('production.invoices')}}">
+                                <span class="nav-main-link-name">Production Invoices</span>
+                            </a>
+                        </li>
+                       
                     </ul>
                 </li>
                 <li class="nav-main-item">

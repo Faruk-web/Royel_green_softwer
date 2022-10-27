@@ -8,10 +8,13 @@ use App\Models\ProductionMaterial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use DataTables;
+use Illuminate\Support\Facades\DB;
+
+
 class ProductionToProductController extends Controller
 {
     //invoice create
-    public function create(){
+    public function production_invoices(){
         return view('invoice.create');
     }
     //invoice create
@@ -20,6 +23,7 @@ class ProductionToProductController extends Controller
         return view('invoice.list',compact('invoices_info'));
     }
     //invoicestore
+
     public function invoicestore(Request $request){
         // dd($request);
         $product_invoice = new ProductInvoice;
@@ -35,6 +39,7 @@ class ProductionToProductController extends Controller
         $product_invoice->save();
         return Redirect()->back()->with('success', 'New product invoice Added');
     }
+
     //invoicelistdata
     public function invoicelistdata(Request $request){
         if ($request->ajax()) {
@@ -45,8 +50,8 @@ class ProductionToProductController extends Controller
                     return '<a href="'.route('invoice.list.edit', $row->id).'"   class="btn btn-info btn-sm btn-rounded">edit</a>';
                 })
                 
-                ->addColumn('invioce_number', function($row){
-                    return $row->invioce_number;
+                ->addColumn('date', function($row){
+                    return date("d-m-Y", strtotime($row->date));
                 })
                 ->addColumn('total_cost', function($row){
                     return $row->total_cost;
@@ -55,7 +60,7 @@ class ProductionToProductController extends Controller
                     return $row->status;
                 })
                 
-                ->rawColumns(['action', 'invioce_number', 'total_cost','status'])
+                ->rawColumns(['action', 'date', 'total_cost','status'])
                 ->make(true);
             }
        }
@@ -123,96 +128,99 @@ class ProductionToProductController extends Controller
 
     public function production_material_store(Request $request)
     {  
-        // dd($request);
+        
+        if(is_null($request->material_id)) {
+            return Redirect()->back()->with('error', 'No Materials Found!');
+        }
+
         $total_invoice = ProductInvoice::count('id');
         $update_count = $total_invoice + 1;
         $invoice_number = "P".rand(1000, 9999).$update_count;
         $total_cost = 0;
+
         foreach($request->material_id as $key => $item) {
-            $product_invoice = new ProductInvoice;
-            $product_invoice->invioce_number = $invoice_number;
-            $product_invoice->date = $request->date;
-            $product_invoice->note = $request->note;
-            $product_invoice->total_cost = $request->total_price[$key];
-            $product_invoice->status ='processing';
-            $product_invoice->date = Carbon::now();
-            $product_invoice->created_at = Carbon::now();
-            $product_invoice->save();
-            }
-            foreach($request->material_id as $key => $item) { 
-                $quantity = $request->quantity[$key];
-                $material_id = $request->material_id[$key];
-                $price = $request->price[$key];
-                $raw_materials_stock =Material::where('material_name', $material_id)->first(); 
-                $check_raw_materials_stock =RawMaterialStock::where('material_id', $raw_materials_stock->id)->first();
-          
-                if(!is_null($check_raw_materials_stock)) {
-                    $db_stock = $check_raw_materials_stock->stock_quantity;
-                    //  dd($db_stock ); 
-                    if($db_stock >= $quantity) {
-                        $total_price = $quantity * $price;
-                        $production_materials = new ProductionMaterial;
-                        $production_materials->raw_material_id = $raw_materials_stock->id;
-                        $production_materials->invioce_number = $invoice_number ;
-                        $production_materials->total_price = $total_price;  
-                        $production_materials->quantity = $quantity; 
-                        $production_materials->price = $price; 
-                        $production_materials->date = $request->date; 
-                        $rests_qty = $db_stock - $quantity;
-                        
-                        if($rests_qty == 0) {
-                            $check_raw_materials_stock->delete();
-                        }
-                        else {
-                            $check_raw_materials_stock->stock_quantity =$rests_qty;
-                            $check_raw_materials_stock->save();
-                        }
-                    }
-                    $production_materials->save();
+
+            $quantity = $request->quantity[$key];
+            $material_id = $request->material_id[$key];
+            $price = $request->price[$key];
+            
+            $check_raw_materials_stock =RawMaterialStock::where('material_id', $material_id)->first();
+        
+            $db_stock = $check_raw_materials_stock->stock_quantity;
+            
+            if($db_stock >= $quantity) {
+
+                $total_price = $quantity * $price;
+                $production_materials = new ProductionMaterial;
+                $production_materials->raw_material_id = $material_id;
+                $production_materials->invioce_number = $invoice_number ;
+                $production_materials->quantity = $quantity; 
+                $production_materials->price = $price;
+                $production_materials->total_price = $total_price;  
+                $production_materials->date = $request->date; 
+                $production_materials->save();
+
+                $total_cost = $total_cost + $total_price;
+
+                $rests_qty = $db_stock - $quantity;
+                if($rests_qty == 0) {
+                    $check_raw_materials_stock->delete();
                 }
-                // return redirect('invoice.create')->with('success', 'New production material Added');
-                return Redirect()->route('production.material.list')->with('success', 'New production material Added');
+                else {
+                    $check_raw_materials_stock->stock_quantity = $rests_qty;
+                    $check_raw_materials_stock->update();
+                }
             }
+            
+        }
+
+        $product_invoice = new ProductInvoice;
+        $product_invoice->invioce_number = $invoice_number;
+        $product_invoice->date = $request->date;
+        $product_invoice->note = $request->note;
+        $product_invoice->total_cost = $total_cost;
+        $product_invoice->status ='processing';
+        $product_invoice->created_at = Carbon::now();
+        $product_invoice->save();
 
            
-            return Redirect()->back()->with('error', 'Sorry you can not access this page');
+        return Redirect()->route('production.invoices')->with('success', 'Production Info Added Successfully.');
      
     }
     // ==============================================================
-    public function search_product(Request $request) {
+
+    public function search_materials_for_production(Request $request) {
         $output = '';
-        $product_info = $request->product_info;
-          $products = Material::where(function ($query) use ($product_info) {
-                                $query->where('material_name', 'LIKE', '%'. $product_info. '%');
-    
-                            })
-                            ->limit(10)
-                            ->get(['material_name','price', 'unit_type', 'id']);
-    
-          if(!empty($product_info)) {
-              if(count($products) > 0) {
+        $material_info = $request->material_info;
+
+        $materials = DB::table('raw_material_stocks')
+                        ->join('materials', 'raw_material_stocks.material_id', '=', 'materials.id')
+                        ->select('materials.*', 'raw_material_stocks.*')
+                        ->get();
+
+          if(!empty($material_info)) {
+              if(count($materials) > 0) {
                 $output .= '<table class="table table-sm table-bordered">
-                <thead>
+                <thead class="bg-success text-light">
                     <tr>
-                        <th scope="col">material_name</th>
-                        <th scope="col">price</th>
+                        <th width="50%">Material Name</th>
+                        <th scope="col">Stock</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>';
-                foreach ($products as $product) {
+                foreach ($materials as $product) {
     
                     $output.='<tr>'.
                     '<td>
-                 ' .$product->material_name.'
+                        '.$product->material_name.'
                     </td>'.
                     '<td>
-    
-                 ' .$product->price.'
+                        '.$product->stock_quantity.' '.$product->unit_type.' 
                     </td>'.
-                    '<td>  <button type="button" onclick="setMember('.$product->id.', \''.$product->material_name.'\', \''.$product->price.'\')" class="mt-2 btn btn-success btn-sm btn-block btn-rounded">Select</button></td>'.
-    
-                        '</tr>';
+                    '<td>  
+                        <button type="button" onclick="set_materials('.$product->material_id.', \''.$product->material_name.'\', \''.$product->price.'\', \''.$product->stock_quantity.'\', \''.$product->unit_type.'\')" class="mt-2 btn btn-success btn-sm btn-block btn-rounded">Select</button></td>'.
+                    '</tr>';
                     }
                 $output .= '</tbody>
             </table>';
@@ -226,6 +234,7 @@ class ProductionToProductController extends Controller
         return Response($output);
     }
 
+
     public function make_production(){
         return view('production.make_production');
     }
@@ -233,6 +242,7 @@ class ProductionToProductController extends Controller
     public function productionmateriallist(){
         return view('invoice.production_materiak_list');
     }
+
     //production_material_data
     public function production_material_data(Request $request){
         if ($request->ajax()) {

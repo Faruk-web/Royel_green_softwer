@@ -17,9 +17,9 @@ class CreateProductionMaterialsTable extends Migration
             $table->id();
             $table->integer('raw_material_id');
             $table->string('invioce_number');
-            $table->decimal('price');
-            $table->decimal('total_price');
-            $table->integer('quantity');
+            $table->string('price');
+            $table->string('total_price');
+            $table->string('quantity');
             $table->date('date');
             $table->timestamps();
         });

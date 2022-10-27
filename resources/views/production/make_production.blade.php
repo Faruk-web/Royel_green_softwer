@@ -23,19 +23,19 @@
                                             <th>X</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="selected_products"></tbody>
+                                    <tbody id="tbody_output"></tbody>
                                 </table>
                             
                             <div class="row">
                                 <div class="col-md-8"></div>
                                     <div class="col-md-4">
-                                        <label for="">Total Tk:</label>
+                                        <label for="">Total Production Cost</label>
                                         <input type="hidden" class="form-control" name="invioce_number" value="">
                                         <input type="text" class="form-control" id="all_total" readonly>
                                     </div>
                                 </div>
                                 <label for="">Date</label>
-                                <input type="date" name="date" class="form-control" id="all_total">
+                                <input type="date" name="date" value="{{ date('Y-m-d') }}" class="form-control" id="">
                                 <br>
                                 <div class="row">
                                     <div class="col-md-12">
@@ -53,17 +53,14 @@
                         </div>
                        </div>
                        <div class="col-md-4">
-                            
-                            <div class="shadow">
-                                <div class="form-group shadow rounded p-3">
-                                    <label for="example-text-input-alt">Search Material</label>
-                                    <input type="text" class="form-control" id="product_search" placeholder="Search By product Name" name="product_search">
-                                    <div class="row mt-2 p-3" id="product_show_info">
+                        <div class="shadow">
+                            <div class="form-group shadow rounded p-3">
+                                <label for="example-text-input-alt">Search Material</label>
+                                <input type="text" class="form-control" id="search_materials" placeholder="Search By product Name" name="search_materials">
+                                <div class="row mt-2 p-3" id="product_show_info">
 
-                                    </div>
                                 </div>
-                        </div>
-                    <div class="col-md-4">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -80,30 +77,19 @@
 referrerpolicy="no-referrer"></script>
 
 <script>
-    // Begin:: doner Search for
-    $('#doner_search').keyup(function () {
-        var doner_info = $(this).val();
-        $.ajax({
-            type: 'get',
-            url: '/project/create/search-doner',
-            data: {
-                'doner_info': doner_info
-            },
-            success: function (data) {
-                $('#doner_show_info').html(data);
-            }
-        });
+
+    $(document).ready(function () {
+        SidebarColpase();
     });
-    // End:: doner Search for
 
     // Begin:: members Search for
-    $('#product_search').keyup(function () {
-        var product_info = $(this).val();
+    $('#search_materials').keyup(function () {
+        var material_info = $(this).val();
         $.ajax({
             type: 'get',
-            url: '/search_product',
+            url: '/make-production/search_materials',
             data: {
-                'product_info': product_info
+                'material_info': material_info
             },
             success: function (data) {
                 $('#product_show_info').html(data);
@@ -115,63 +101,48 @@ referrerpolicy="no-referrer"></script>
 
 <script>
 
-function setMember(id, name, price, type) {
-    var check = $('#product_id_'+id).val();
+function set_materials(id, material_name, price, stock_qty, unit_type) {
+    var check = $('#material_id_'+id).val();
     if(check) {
-        error("Products is exist.");
+        error("Material is exist.");
     }
     else {
-        const cartDom = `
-            <tr id="product_column_`+id+`">
-           
-            <td> <input type="text" class="form-control name="material_id[]" id="product_id_`+id+`" value="`+name+`" readonly>
-            <td><input type="hidden" name="material_id[]" id="product_id_`+id+`" value="`+name+`">
-            <input type="number" class="form-control qty"  name="quantity[]" oninput="qty(`+id+`)" value="" id="qty`+id+`" >
-            </td>
-           <td> <input type="number" class="form-control price" name="price[]" oninput="price(`+id+`)" value="`+price+`" id="price`+id+`" ></td>
-           <td> <input type="number" class="form-control total" name="total_price[]" value="0" id="total`+id+`" readonly></td>
-           <td><button type="button" onclick="delete_product(`+id+`)" class="mt-2 btn btn-danger btn-sm">X</button></td>
-            </tr>
+        const cartDom = `<tr id="material_row_`+id+`">
+                            <td>
+                                `+material_name+`
+                                <input type="hidden" name="material_id[]" id="material_id_`+id+`" value="`+id+`" >
+                            </th>
+                            <td><input class="form-control qty" type="number" required max="`+stock_qty+`" name="quantity[]" oninput="change_quantity()" id="" value="" step=any> <small class="text-danger">Max: `+stock_qty+` `+unit_type+`</small></td>
+                            <td><input class="form-control price" type="number" required name="price[]" id="" readonly value="`+price+`" step=any></td>
+                            <td><input class="form-control total" readonly type="number" name="total_price[]" id="" value="" step=any></td>
+                            <td><button type="button" onclick="delete_product(`+id+`)" class="mt-2 btn btn-danger btn-sm">X</button></td>
+                        </tr>`;
 
-            `;
-
-        $('#selected_products').append(cartDom);
-        $('#product_show_info').html('');
-        $('#product_search').val('');
-        success("product Added.");
+        $('#tbody_output').append(cartDom);
     }
 }
 
-function delete_product(id) {
-    $('#product_column_'+id).remove();
-    success("Product Deleted.");
-    multiply();
-}
+    function delete_product(id) {
+        $('#material_row_'+id).remove();
+        success("Material Deleted.");
+        multiply();
+    }
 
-function setDonerInfo(name, phone) {
-    $('#doner_name').val(name);
-    $('#doner_phone').val(phone);
-    $('#modal_close').click();
-    success("Doner Info set Successfully.");
-}
 
-function qty(id) {
-         multiply();
-
+    function change_quantity(id) {
+        multiply();
     }
 
     function price(id) {
-         multiply();
-
+        multiply();
     }
 
     function multiply() {
 
         var qty = document.querySelectorAll(".qty");
-
         var i, qty = qty.length;
-        for (i = 0; i < qty; i++) {
 
+        for (i = 0; i < qty; i++) {
             perprice = Number(document.getElementsByClassName('price')[i].value);
             qty = Number(document.getElementsByClassName('qty')[i].value);
             tk = perprice*qty;
@@ -180,18 +151,16 @@ function qty(id) {
 
         }
         function calculateSum() {
-		var final_tk = 0;
-		$(".total").each(function() {
-			if(!isNaN(this.value) && this.value.length!=0) {
-				final_tk += parseFloat(this.value);
-			}
-		});
+            var final_tk = 0;
+            $(".total").each(function() {
+                if(!isNaN(this.value) && this.value.length!=0) {
+                    final_tk += parseFloat(this.value);
+                }
+            });
 
-		$('#all_total').val(final_tk);
+            $('#all_total').val(final_tk.toFixed(2));
+        }
     }
-
-    }
-
 </script>
 
 @endsection
