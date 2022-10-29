@@ -212,6 +212,7 @@ class ProductionToProductController extends Controller
 
         $materials = DB::table('raw_material_stocks')
                         ->join('materials', 'raw_material_stocks.material_id', '=', 'materials.id')
+                        ->Where('materials.material_name', 'like', "%$material_info%")
                         ->select('materials.*', 'raw_material_stocks.*')
                         ->get();
 

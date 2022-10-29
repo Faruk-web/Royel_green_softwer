@@ -24,6 +24,12 @@
                     <span class="nav-main-link-name"><span class="rounded p-1 ">Dashboard</span></span>
                 </a>
             </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link active" href="{{route('setting')}}">
+                    <i class="nav-main-link-icon fas fa-edit"></i>
+                    <span class="nav-main-link-name"><span class="rounded p-1">Setting</span></span>
+                </a>
+            </li>
                 
                 <!-- <li class="nav-main-item">
                     <a class="nav-main-link active" href="">
@@ -128,7 +134,7 @@
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="{{route('production.material')}}">
-                                <span class="nav-main-link-name">Production Material</span>
+                                <span class="nav-main-link-name">Make Production</span>
                             </a>
                         </li>
                         
@@ -140,6 +146,83 @@
                        
                     </ul>
                 </li>
+                <li class="nav-main-item">
+                    <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+                    <i class="nav-main-link-icon fas fa-plane"></i>
+                        <span class="nav-main-link-name">Bill Preparation</span>
+                    </a>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{route('bill.preparation')}}">
+                                <span class="nav-main-link-name">Prepare Bill</span>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{route('sell.index')}}">
+                                <span class="nav-main-link-name">Bill / Sold Invoices</span>
+                            </a>
+                        </li>
+                       
+                    </ul>
+                </li>
+
+                <li class="nav-main-item">
+                    <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+                        <i class="nav-main-link-icon fas fa-user-plus"></i>
+                        <span class="nav-main-link-name">Staff</span>
+                    </a>
+                    <ul class="nav-main-submenu">
+
+                        <li class="nav-main-item">
+                            <a class="nav-main-link"  href="{{route('add.staff')}}">
+                                <span class="nav-main-link-name">Add Staff</span>
+                            </a>
+                        </li>
+                       
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{route('staff.list')}}">
+                                <span class="nav-main-link-name">Staff List</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item"><a class="nav-main-link" href="{{route('staff.sallery')}}">
+                            <span class="nav-main-link-name">Staff Sallery</span></a>
+                        </li>
+                        <li class="nav-main-item"><a class="nav-main-link" href="{{route('staff.sallery.history')}}">
+                            <span class="nav-main-link-name">Staff Sallery History</span></a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="nav-main-item">
+                    <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+                        <i class="nav-main-link-icon fas fas fa-money-check-alt"></i>
+                        <span class="nav-main-link-name"> Expense </span>
+                    </a>
+                    <ul class="nav-main-submenu">
+
+                        <li class="nav-main-item">
+                            <a class="nav-main-link"  href="{{route('expence.category')}}">
+                                <span class="nav-main-link-name">Expense Category</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link"  href="{{route('expence')}}">
+                                <span class="nav-main-link-name">Expense Entry</span>
+                            </a>
+                        </li>
+                       
+                        <li class="nav-main-item">
+                            <a class="nav-main-link"  href="{{route('expence.list')}}">
+                                <span class="nav-main-link-name">Expense list</span>
+                            </a>
+                        </li>
+                      
+                    </ul>
+                </li>
+                
+
+                
             </ul>
         </div>
     </div>

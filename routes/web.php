@@ -8,6 +8,12 @@ use App\Http\Controllers\PurchaseInvoiceController;
 use App\Http\Controllers\ProductInvoiceController;
 use App\Http\Controllers\ProductionToProductController;
 use App\Http\Controllers\ProductionToProductOutPutController;
+use App\Http\Controllers\SellInvoiceController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\StaffSalleryController;
+use App\Http\Controllers\ExpensesController;
+
+
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -95,7 +101,7 @@ Route::group(['middleware' => 'auth'], function () {
     //Production
     Route::post('/production/material/store', [ProductionToProductController::class, 'production_material_store'])->name('production.material.store');
     Route::get('/make-production', [ProductionToProductController::class, 'make_production'])->name('production.material');
-    Route::get('make-production/search_materials', [ProductionToProductController::class, 'search_materials_for_production']);
+    Route::get('/make-production/search_materials', [ProductionToProductController::class, 'search_materials_for_production']);
     Route::get('/production/material/list', [ProductionToProductController::class, 'productionmateriallist'])->name('production.material.list');
     Route::get('/production/material/data', [ProductionToProductController::class, 'production_material_data'])->name('production.material.data');
     Route::get('/production-invoice/{invoice_number}/view', [ProductionToProductController::class, 'production_invoice_view'])->name('production.invoice.view');
@@ -118,7 +124,48 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
+    // staff route start
+    Route::get('/add/staff', [StaffController::class, 'addstaff'])->name('add.staff');
+    Route::get('/staff/list', [StaffController::class, 'stafflist'])->name('staff.list');
+    Route::post('/store/staff', [StaffController::class, 'staffstore'])->name('staff.store');
+    Route::get('/staff/list/index',[StaffController::class, 'stafflistindex'])->name('staff.list.index');
+    Route::get('/staff/edit/{id}',[StaffController::class, 'staffedit'])->name('staff.edit');
+    Route::post('/staff/update',[StaffController::class, 'staffupdate'])->name('staff.update');
 
+    //staff sallery start
+    Route::get('/staff/sallery', [StaffSalleryController::class, 'staff_sallery'])->name('staff.sallery');
+    Route::get('/staff/sallery/history', [StaffSalleryController::class, 'salleryhistory'])->name('staff.sallery.history');
+    Route::get('/sallery/index', [StaffSalleryController::class, 'salleryhistoryindex'])->name('staff.sallery.index');
+    Route::get('/sallery/search', [StaffSalleryController::class, 'staffsearch'])->name('staff.search');
+    Route::post('/month/search', [StaffSalleryController::class, 'monthsearch']);
+    Route::post('/staff/pay', [StaffSalleryController::class, 'pay'])->name('staff.payment.pay');
+    //staff sallery end
+
+    // expense route start
+    Route::get('/expence', [ExpensesController::class, 'expence'])->name('expence');
+    Route::get('/expence/list', [ExpensesController::class, 'expencelist'])->name('expence.list');
+    Route::post('/expence/store', [ExpensesController::class, 'expence_store'])->name('expence.store');
+    Route::get('/expence/index', [ExpensesController::class, 'expenceindex'])->name('expence.index');
+    Route::get('/expence/category', [ExpensesController::class, 'category'])->name('expence.category');
+    Route::get('/expense/edit-category/{id}', [ExpensesController::class, 'categoryedit']);
+    Route::post('/category/store', [ExpensesController::class, 'categorystore']);
+    Route::post('/category/update', [ExpensesController::class, 'categoryupdate']);
+    // expense route end
+
+    // business setting route
+    Route::get('/setting', [Admincontroller::class, 'setting'])->name('setting');
+    Route::post('/store/setting', [Admincontroller::class, 'storesetting'])->name('store.update.setting');
+    Route::get('/balance/index',[Admincontroller::class, 'balanceindex'])->name('balance.index');
+
+    // Sell / bill preparation Start
+    Route::get('/bill/preparation', [SellInvoiceController::class, 'create'])->name('bill.preparation');
+    Route::get('/bill_preparation/search_client', [SellInvoiceController::class, 'search_client']);
+    Route::get('/bill_preparation/search_products', [SellInvoiceController::class, 'search_products']);
+    Route::post('/bill/preparation/store', [SellInvoiceController::class, 'store'])->name('bill.preparation.store');
+    Route::get('/all-bills', [SellInvoiceController::class, 'index'])->name('sell.index');
+    Route::get('/all-bills_data', [SellInvoiceController::class, 'index_data'])->name('bills.index.data');
+    
+    // Sell End
 
 
 
