@@ -159,10 +159,35 @@ class ProductionToProductOutPutController extends Controller
         return back()->with('success', 'Production to product added.');
 
     }
+
+
+    //change production status
+    public function change_production_status(Request $request){
+        $invoice_number = $request->invoice_number;
+
+        $invoice_info = ProductInvoice::where('invioce_number', $invoice_number)->first();
+        if(!is_null($invoice_info)) {
+            $invoice_info->status = $request->status;
+            $invoice_info->update();
+            return back()->with('success', 'Production Status Updated.');
+        }
+        else {
+            return back()->with('error', 'No Production Info Found!!!');
+        }
+        return $invoice_info;
+    }
+
+
+
+
+
         //productiontoproductlist
         public function productiontoproductlist(){
             return view('production.list');
         }
+
+
+
         //production_material_data
     public function productiontoproductdata(Request $request){
         if ($request->ajax()) {

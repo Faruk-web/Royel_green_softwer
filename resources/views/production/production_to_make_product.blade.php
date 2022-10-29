@@ -23,7 +23,9 @@
                                         <th>X</th>
                                     </tr>
                                 </thead>
-                                <tbody id="selected_products"></tbody>
+                                <tbody id="selected_products">
+
+                                </tbody>
 
                         </table>
                         </div>
@@ -38,31 +40,68 @@
                                 </div>
                             </div>
 
-                            <div class="p-2">
-                                <div class="shadow rounded border p-2">
-                                    <h4 class="m-0">Previous Made Products <span class="text-primary">for Invoice: {{$production_invoice->invioce_number}}</span> </h4>
-                                    {{$production_invoice->production_to_product_output}}
-                                </div>
-                                
-                            </div>
                     </div>
-                         </div>
-                       <div class="col-md-4 p-1">
-                            
-                            <div class="shadow">
-                                <div class="form-group shadow rounded p-3">
-                                    <label for="example-text-input-alt">Search Product</label>
-                                    <input type="text" class="form-control" id="product_search" placeholder="Search By product Name" name="product_search">
-                                    <div class="row mt-2 p-3" id="product_show_info">
 
-                                    </div>
+                    <div class="mt-4">
+                        <div class="shadow rounded border p-2">
+                            <h4 class="mb-2">Previous Made Products <span class="text-primary">for Invoice: {{$production_invoice->invioce_number}}</span> </h4>
+                            @if(count($production_invoice->production_to_product_output) > 0)
+                                <table class="table table-bordered">
+                                    <thead class="bg-dark text-light">
+                                    <tr>
+                                        <th width="60%">Product Name</th>
+                                        <th>QTY</th>
+                                        <th>Date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($production_invoice->production_to_product_output as $made_product)
+                                        <tr>
+                                            <td>{{$made_product->ProductInfo->product_name}}</td>
+                                            <td>{{$made_product->quantity}} {{$made_product->ProductInfo->unit_type}}</td>
+                                            <td>{{date('d-m-Y', strtotime($made_product->date))}}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                <h2 class="text-center"><b>No Products Made Before</b></h2>
+                            @endif
+                        </div>
+                        
+                    </div>
+                    </div>
+                       <div class="col-md-4 p-1">
+                        <div class="shadow">
+                            <div class="form-group shadow rounded p-3">
+                                <label for="example-text-input-alt">Search Product</label>
+                                <input type="text" class="form-control" id="product_search" placeholder="Search By product Name" name="product_search">
+                                <div class="row mt-2 p-3" id="product_show_info">
+
                                 </div>
+                            </div>
                         </div>
-                    <div class="col-md-4">
+                    </form>
+                        <div class="shadow mt-3">
+                            <form action="{{route('production.change.status')}}" class="shadow rounded p-3" method="post">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="example-text-input-alt">Change Production Status</label>
+                                    <select name="status" class="form-control" id="">
+                                        <option @if($production_invoice->status == 'processing') class="text-light bg-success" selected @endif value="processing">Processing</option>
+                                        <option @if($production_invoice->status == 'complete') class="text-light bg-success" selected @endif value="complete">Complete</option>
+                                    </select>
+                                    <input type="hidden" name="invoice_number" value="{{$production_invoice->invioce_number}}">
+                                </div>
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-success">Change Status</button>
+                                </div>
+                            </form> 
                         </div>
+                        
                     </div>
                 </div>
-            </form>
+            
                 </div>
             </div>
         </div>

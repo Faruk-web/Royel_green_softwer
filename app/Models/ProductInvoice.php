@@ -16,7 +16,7 @@ class ProductInvoice extends Model
 
     // production to product output info
     public function production_to_product_output() {
-        return $this->hasMany(ProductionToProductOutput::class, 'invioce_number','invioce_number');
+        return $this->hasMany(ProductionToProductOutput::class, 'invioce_number','invioce_number')->orderBy('id', 'DESC');
     }
 
     
