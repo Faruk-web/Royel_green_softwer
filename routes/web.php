@@ -12,7 +12,7 @@ use App\Http\Controllers\SellInvoiceController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StaffSalleryController;
 use App\Http\Controllers\ExpensesController;
-
+use App\Http\Controllers\BankController;
 
 
 
@@ -122,7 +122,27 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/production/product/stock', [ProductionToProductOutPutController::class, 'productstock'])->name('production.product.stock');
     Route::get('/production/product/stock/data', [ProductionToProductOutPutController::class, 'productstockdata'])->name('production.product.stock.data');
 
+    //Get balance
+    Route::get('/balance/index',[SalesController::class, 'balanceindex'])->name('balance.index');
 
+    //Banks
+    Route::group(['prefix'=>'bank', 'as'=>'bank.'], function() {
+        Route::get('/deposit', [BankController::class, 'deposit'])->name('deposit');
+        Route::post('/deposit/delete', [BankController::class, 'depositdelete'])->name('deposit.delete');
+        Route::post('/deposit/deletee', [BankController::class, 'withdrawdelete'])->name('withdraw.delete');
+        Route::post('/deposit', [BankController::class, 'storedeposit'])->name('store.deposit');
+        Route::get('/all-work-data', [BankController::class, 'work_data'])->name('index.data');
+        Route::get('/withdraw', [BankController::class, 'withdraw'])->name('withdraw');
+        Route::post('/withdraw', [BankController::class, 'storewithdraw'])->name('store.withdraw');
+        Route::get('/withdraw-data', [BankController::class, 'work_data_withdraw'])->name('withdraw.data');
+        Route::get('/bank-list', [BankController::class, 'banklist'])->name('list');
+        Route::post('/add', [BankController::class, 'bankadd'])->name('add');
+        Route::get('/list-data', [BankController::class, 'banklistdata'])->name('list.data');
+        Route::get('/list-edit/{id}', [BankController::class, 'banklistedit'])->name('list.edit');
+        Route::get('/list-history/{id}', [BankController::class, 'banklisthistory'])->name('list.history');
+        Route::get('/history/{id}', [BankController::class, 'banklisthistorydata'])->name('history.data');
+        Route::post('/update-bank/{id}', [BankController::class, 'banklistupdate'])->name('list.update'); 
+     });
 
     // staff route start
     Route::get('/add/staff', [StaffController::class, 'addstaff'])->name('add.staff');

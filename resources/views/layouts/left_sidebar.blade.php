@@ -146,10 +146,10 @@
                        
                     </ul>
                 </li>
-                <li class="nav-main-item">
+                <li class="nav-main-item bg-light">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                    <i class="nav-main-link-icon fas fa-plane"></i>
-                        <span class="nav-main-link-name">Bill Preparation</span>
+                    <i class="nav-main-link-icon fa fa-cart-plus text-dark"></i>
+                        <span class="nav-main-link-name text-dark">Bill Preparation</span>
                     </a>
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
@@ -218,6 +218,29 @@
                             </a>
                         </li>
                       
+                    </ul>
+                </li>
+                <li class="nav-main-item">
+                    <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+                        <i class="nav-main-link-icon fas fa-dollar-sign"></i>
+                        <span class="nav-main-link-name">Bank</span>
+                    </a>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{route('bank.list')}}">
+                                <span class="nav-main-link-name">Bank List</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{route('bank.deposit')}}">
+                                <span class="nav-main-link-name">Deposit</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{route('bank.withdraw')}}">
+                                <span class="nav-main-link-name">Withdraw</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 
