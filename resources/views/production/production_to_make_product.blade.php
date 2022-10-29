@@ -40,14 +40,11 @@
 
                             <div class="p-2">
                                 <div class="shadow rounded border p-2">
-                                    <h4 class="m-0">Previous Make Product <span class="text-primary">for Invoice: {{$production_invoice->invioce_number}}</span> </h4>
+                                    <h4 class="m-0">Previous Made Products <span class="text-primary">for Invoice: {{$production_invoice->invioce_number}}</span> </h4>
                                     {{$production_invoice->production_to_product_output}}
                                 </div>
                                 
                             </div>
-
-
-
                     </div>
                          </div>
                        <div class="col-md-4 p-1">
