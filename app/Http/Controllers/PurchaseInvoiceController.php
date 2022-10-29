@@ -210,7 +210,7 @@ class PurchaseInvoiceController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    return '<a href="#" class="btn btn-primary btn-sm btn-rounded">View Invoice</a>';
+                    return '<a href="#" class="btn btn-primary btn-sm btn-rounded">Invoice</a> <a href="#" class="btn btn-success btn-sm btn-rounded">Chalan</a>';
                 })
                 ->addColumn('supplier_name', function($row){
                     return optional($row->senderSupplierInfo)->supplier_name."<br>".optional($row->senderSupplierInfo)->phone;
