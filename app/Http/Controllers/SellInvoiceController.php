@@ -32,8 +32,7 @@ class SellInvoiceController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    //'.route('raw.material.edit', $row->id).'
-                    return '<a href="#" class="btn btn-info btn-sm btn-rounded">Invoice</a>';
+                    return '<a href="'.route('bills.show', ['invoice_number'=>$row->invioce_number]).'" class="btn btn-info btn-sm btn-rounded">Invoice</a>';
                 })
                 ->addColumn('client_info', function($row){
                     return optional($row->clientInfo)->name." [".optional($row->clientInfo)->phone." ]";
@@ -222,9 +221,18 @@ class SellInvoiceController extends Controller
      * @param  \App\Models\SellInvoice  $sellInvoice
      * @return \Illuminate\Http\Response
      */
-    public function show(SellInvoice $sellInvoice)
+    public function show($invoice_number)
     {
-        //
+        $business_info = DB::table('business_infos')->first();
+        $btb_invoice_info = SellInvoice::where('invioce_number', $invoice_number)->first();
+        if($btb_invoice_info) {
+            return view('sell.view_invoice', compact('business_info', 'btb_invoice_info'));
+        }
+        else {
+            return Redirect()->back()->with('error', 'Sorry you can not access this page');
+        }
+        
+        //return view('sell.index');
     }
 
     /**

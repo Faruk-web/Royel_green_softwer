@@ -13,5 +13,9 @@ class SellInvoice extends Model
         return $this->belongsTo(clients::class, 'client_id','id');
     }
 
+    public function sold_products() {
+        return $this->hasMany(SoldProducts::class, 'invioce_number','invioce_number');
+    }
+
 
 }

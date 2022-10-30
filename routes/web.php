@@ -184,6 +184,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/bill/preparation/store', [SellInvoiceController::class, 'store'])->name('bill.preparation.store');
     Route::get('/all-bills', [SellInvoiceController::class, 'index'])->name('sell.index');
     Route::get('/all-bills_data', [SellInvoiceController::class, 'index_data'])->name('bills.index.data');
+    Route::get('/bill/{invoice_number}/show', [SellInvoiceController::class, 'show'])->name('bills.show');
     
     // Sell End
 
