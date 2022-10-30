@@ -187,8 +187,9 @@ Route::group(['middleware' => 'auth'], function () {
     
     // Sell End
 
-
-
+    Route::get('/purchase/stock-in/{invoice_id}/view-invoice', [PurchaseInvoiceController::class, 'purchase_invoice'])->name('purchase.stock.in.view.invoice');
+    Route::get('/purchase/stock-in/{invoice_id}/view-chalan', [PurchaseInvoiceController::class, 'purchase_chalan_view'])->name('purchase.stock.in.view.chalan');
+     
 
 
 

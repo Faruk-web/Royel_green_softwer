@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Business_info;
 use Image;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
 {
@@ -29,17 +30,26 @@ class AdminController extends Controller
         else {
             $setting = new Business_info;
         }
-        
-        if($request->logo) {
-            $logo = $request->file('logo');
-            $name_gen = hexdec(uniqid()).".".$logo->getClientOriginalExtension();
-            Image::make($logo)->save('./public/images/settings/'.$name_gen);
-            $final_logo = 'images/settings/'.$name_gen;
-            if(is_file(public_path(optional($info)->logo))){
-                //unlink('./public/'. $info->logo);
+
+        if($request->hasfile('logo'))
+        {
+            $destination = './uploads/settings/'.$info->logo;
+            if(File::exists($destination))
+            {
+                File::delete($destination);
             }
-            $setting->logo = $final_logo;
         }
+        
+        // if($request->logo) {
+        //     $logo = $request->file('logo');
+        //     $name_gen = hexdec(uniqid()).".".$logo->getClientOriginalExtension();
+        //     Image::make($logo)->save('./public/images/settings/'.$name_gen);
+        //     $final_logo = 'images/settings/'.$name_gen;
+        //     if(is_file(public_path(optional($info)->logo))){
+        //         //unlink('./public/'. $info->logo);
+        //     }
+        //     $setting->logo = $final_logo;
+        // }
        
         $setting->name = $request->name;
         $setting->phone = $request->phone;

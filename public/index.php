@@ -32,7 +32,7 @@ if (file_exists(__DIR__.'/../storage/framework/maintenance.php')) {
 */
 
 require __DIR__.'/../vendor/autoload.php';
-
+set_time_limit(300);
 /*
 |--------------------------------------------------------------------------
 | Run The Application
