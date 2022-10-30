@@ -32,7 +32,7 @@ class SellInvoiceController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    return '<a href="'.route('bills.show', ['invoice_number'=>$row->invioce_number]).'" class="btn btn-info btn-sm btn-rounded">Invoice</a>';
+                    return '<a href="'.route('bills.show', ['invoice_number'=>$row->invioce_number]).'" class="btn btn-info btn-sm btn-rounded">Invoice</a> <a href="'.route('bills.show.chalan', ['invoice_number'=>$row->invioce_number]).'" class="btn btn-success btn-sm btn-rounded">Chalan</a>';
                 })
                 ->addColumn('client_info', function($row){
                     return optional($row->clientInfo)->name." [".optional($row->clientInfo)->phone." ]";
@@ -232,8 +232,23 @@ class SellInvoiceController extends Controller
             return Redirect()->back()->with('error', 'Sorry you can not access this page');
         }
         
-        //return view('sell.index');
     }
+
+    public function show_chalan($invoice_number)
+    {
+        $business_info = DB::table('business_infos')->first();
+        $btb_invoice_info = SellInvoice::where('invioce_number', $invoice_number)->first();
+        if($btb_invoice_info) {
+            return view('sell.view_chalan', compact('business_info', 'btb_invoice_info'));
+        }
+        else {
+            return Redirect()->back()->with('error', 'Sorry you can not access this page');
+        }
+        
+    }
+
+    
+
 
     /**
      * Show the form for editing the specified resource.

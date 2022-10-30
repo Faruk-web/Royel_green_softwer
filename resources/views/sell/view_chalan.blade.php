@@ -93,7 +93,7 @@
                                         </th>
                                         <th style="text-align: right; border: 0px solid white;">
                                             <p class="invoiceIDandDate" style="font-family: Arial;">
-                                                Bill / Sell Invoice<br>
+                                                Bill / Sell Chalan<br>
                                                 Invoice: {{optional($btb_info)->invioce_number}}<br>
                                                 Date: {{date('d M, Y', strtotime(optional($btb_invoice_info)->date))}}<br>
                                                 <b>PVS</b>: {{optional($btb_info)->pvs}}<br>
@@ -109,10 +109,8 @@
                                     <thead class="thead-light">
                                         <tr style="text-align: right; background-color: #dddddd;">
                                             <th scope="col" width="5%" style="text-align: center;">SN</th>
-                                            <th width="50px" style="text-align: left;">Product Info</th>
+                                            <th width="70%" style="text-align: left;">Product Info</th>
                                             <th scope="col" style="text-align: center;">Qty</th>
-                                            <th scope="col" style="text-align: center;">Price</th>
-                                            <th scope="col" style="text-align: center;">Total Price</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -121,21 +119,12 @@
                                         @php( $product_info = optional($product->productInfo) )
                                         <tr style="text-align: right;">
                                             <th scope="row" style="text-align: center;">{{$i}}</th>
-                                            <td width="350px" style="text-align: left;">{{$product_info->product_name }}<br><b>Class: </b>{{$product_info->class }}<br><b>Size: </b>{{$product_info->size }}</td>
+                                            <td width="70%" style="text-align: left;">{{$product_info->product_name }}<br><b>Class: </b>{{$product_info->class }}<br><b>Size: </b>{{$product_info->size }}</td>
                                             <td style="text-align: center;">{{$product->quantity}} {{$product_info->unit_type }}</td>
-                                            <td style="text-align: center;">{{$product->price}}</td>
-                                            <td style="text-align: center;">{{$product->total_price}}</td>
                                         </tr>
                                         @php($i += 1)
                                         @endforeach
-                                        <tr>
-                                            <td colspan="4" class="text-right"  style="border-left: 1px solid #ffffff !important; border-bottom: 1px solid #ffffff !important;"><h4 class="mb-0"><b>Total</b></h4></td>
-                                            <td class="text-center">{{number_format(optional($btb_info)->total_gross, 2)}} TK</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4" class="text-right" style="border-left: 1px solid #ffffff !important; border-bottom: 1px solid #ffffff !important;"><h4 class="mb-0"><b>Paid</b></h4></td>
-                                            <td class="text-center">{{number_format(optional($btb_info)->paid, 2)}} TK</td>
-                                        </tr>
+                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -167,8 +156,7 @@
 </div>
 
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"
-    referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
 
