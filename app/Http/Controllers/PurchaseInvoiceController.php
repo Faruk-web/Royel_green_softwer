@@ -9,7 +9,9 @@ use App\Models\RawMaterialStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use DataTables;
-
+use Illuminate\Support\Facades\DB;
+// use PDF;
+use \PDF;
 class PurchaseInvoiceController extends Controller
 {
     //purchase Invoice
@@ -202,34 +204,6 @@ class PurchaseInvoiceController extends Controller
     public function Invoice_list(){
         return view('purchase.purchase_list');
     }
-
-    //data fache for lis
-    public function Invoice_list_data(Request $request){
-        if ($request->ajax()) {
-            $data = PurchaseInvoice::orderBy('id', 'desc')->get();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    return '<a href="#" class="btn btn-primary btn-sm btn-rounded">View Invoice</a>';
-                })
-                ->addColumn('supplier_name', function($row){
-                    return optional($row->senderSupplierInfo)->supplier_name."<br>".optional($row->senderSupplierInfo)->phone;
-                })
-                ->addColumn('invioce_number', function($row){
-                    return $row->invioce_number;
-                })
-                ->addColumn('total_gross', function($row){
-                    return $row->total_gross;
-                })
-                ->addColumn('date', function($row){
-                    return date('d-m-Y', strtotime($row->date));
-                })
-                
-                ->rawColumns(['action', 'supplier_name', 'invioce_number','total_gross', 'date'])
-                ->make(true);
-        }
-      
-    }
     //purchase_material_list
     public function purchase_material_list(){
         return view('purchase.purchase_material_list');
@@ -262,4 +236,51 @@ class PurchaseInvoiceController extends Controller
         }
     
     }
+        //invoice
+        public function purchase_invoice($invoice_id)
+        {
+            // dd($invoice_id);
+            $shop_info = DB::table('business_infos')->first();
+            $btb_invoice_info = PurchaseInvoice::where('id', $invoice_id)->first();
+            // dd($btb_invoice_info);
+            if($btb_invoice_info) {
+                $pdf = PDF::loadView('purchase.view_invoice', compact('shop_info', 'btb_invoice_info'));
+                return $pdf->stream('supplier invoice '.$btb_invoice_info->invoice_id);
+            }
+            else {
+                return Redirect()->back()->with('error', 'Sorry you can not access this page');
+            }
+        }
+            //data fache for lis
+            public function Invoice_list_data(Request $request){
+                if ($request->ajax()) {
+                    $data = PurchaseInvoice::orderBy('id', 'desc')->get();
+                    return Datatables::of($data)
+                        ->addIndexColumn()
+                        ->addColumn('action', function($row){
+                            return '<a href="'.route('purchase.stock.in.view.invoice', ['invoice_id'=>$row->id]).'" class="btn btn-primary btn-sm btn-rounded">View Invoice</a>';
+                        })
+                        // ->addColumn('action', function($row){
+                        //     $info = '<a target="_blank" href="'.route('admin.btb.stock.in.view.invoice', ['invoice_id'=>$row->invoice_id]).'" class="btn btn-primary btn-sm">Invoice</a>';
+                        //     return $info;
+                        // })
+                        ->addColumn('supplier_name', function($row){
+                            return optional($row->senderSupplierInfo)->supplier_name."<br>".optional($row->senderSupplierInfo)->phone;
+                        })
+                        ->addColumn('invioce_number', function($row){
+                            return $row->invioce_number;
+                        })
+                        ->addColumn('total_gross', function($row){
+                            return $row->total_gross;
+                        })
+                        ->addColumn('date', function($row){
+                            return date('d-m-Y', strtotime($row->date));
+                        })
+                        
+                        ->rawColumns(['action', 'supplier_name', 'invioce_number','total_gross', 'date'])
+                        ->make(true);
+                }
+            
+            }
+
 }

@@ -11,4 +11,8 @@ class PurchaseInvoice extends Model
     public function senderSupplierInfo() {
         return $this->belongsTo(Supplier::class, 'supplier_id','id');
     }
+    //invoice products
+    public function invoice_products() {
+        return $this->hasMany(PurchaseMaterial::class, 'invioce_number', 'invioce_number');
+    }
 }

@@ -18,8 +18,4 @@ class ProductInvoice extends Model
     public function production_to_product_output() {
         return $this->hasMany(ProductionToProductOutput::class, 'invioce_number','invioce_number');
     }
-
-    
-
-
 }

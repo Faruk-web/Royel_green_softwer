@@ -8,7 +8,11 @@ use App\Http\Controllers\PurchaseInvoiceController;
 use App\Http\Controllers\ProductInvoiceController;
 use App\Http\Controllers\ProductionToProductController;
 use App\Http\Controllers\ProductionToProductOutPutController;
-
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\ExpensesController;
+use App\Http\Controllers\StaffSalleryController;
+use App\Http\Controllers\SalesController;
+use App\Http\Controllers\BankController;
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -21,6 +25,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/transaction-history', [TransactionsController::class, 'index'])->name('transactions.history');
     Route::get('/transaction-history-data', [TransactionsController::class, 'transactions_data'])->name('all.transactions.data');
     Route::post('/admin/update-print-cost', [SettingsController::class, 'store'])->name('update.print.cost');
+
+    Route::get('/setting', [Admincontroller::class, 'setting'])->name('setting');
+    Route::post('/store/setting', [Admincontroller::class, 'storesetting'])->name('store.update.setting');
+    Route::get('/balance/index',[Admincontroller::class, 'balanceindex'])->name('balance.index');
 
 
     //Begin: crm
@@ -113,6 +121,57 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/production/to/product/data', [ProductionToProductOutPutController::class, 'productiontoproductdata'])->name('production.product.data');
     Route::get('/production/product/stock', [ProductionToProductOutPutController::class, 'productstock'])->name('production.product.stock');
     Route::get('/production/product/stock/data', [ProductionToProductOutPutController::class, 'productstockdata'])->name('production.product.stock.data');
+     // staff route start
+     Route::get('/add/staff', [StaffController::class, 'addstaff'])->name('add.staff');
+     Route::get('/staff/list', [StaffController::class, 'stafflist'])->name('staff.list');
+     Route::post('/store/staff', [StaffController::class, 'staffstore'])->name('staff.store');
+     Route::get('/staff/list/index',[StaffController::class, 'stafflistindex'])->name('staff.list.index');
+     Route::get('/staff/edit/{id}',[StaffController::class, 'staffedit'])->name('staff.edit');
+     Route::post('/staff/update',[StaffController::class, 'staffupdate'])->name('staff.update');
+   //staff sallery start
+   Route::get('/staff/sallery', [StaffSalleryController::class, 'staff_sallery'])->name('staff.sallery');
+   Route::get('/staff/sallery/history', [StaffSalleryController::class, 'salleryhistory'])->name('staff.sallery.history');
+   Route::get('/sallery/index', [StaffSalleryController::class, 'salleryhistoryindex'])->name('staff.sallery.index');
+   Route::get('/sallery/search', [StaffSalleryController::class, 'staffsearch'])->name('staff.search');
+    Route::post('/month/search', [StaffSalleryController::class, 'monthsearch']);
+    Route::post('/staff/pay', [StaffSalleryController::class, 'pay'])->name('staff.payment.pay');
+   //staff sallery end
 
+    // expense route start
+    Route::get('/expence', [ExpensesController::class, 'expence'])->name('expence');
+    Route::get('/expence/list', [ExpensesController::class, 'expencelist'])->name('expence.list');
+    Route::post('/expence/store', [ExpensesController::class, 'expence_store'])->name('expence.store');
+    Route::get('/expence/index', [ExpensesController::class, 'expenceindex'])->name('expence.index');
+    Route::get('/expence/category', [ExpensesController::class, 'category'])->name('expence.category');
+    Route::get('/expense/edit-category/{id}', [ExpensesController::class, 'categoryedit']);
+    Route::post('/category/store', [ExpensesController::class, 'categorystore']);
+    Route::post('/category/update', [ExpensesController::class, 'categoryupdate']);
+    // expense route end
+     //sale
+   //   Route::get('/sale',[SalesController::class, 'sale'])->name('sale');
+   //   Route::get('/sale/list',[SalesController::class, 'salelist'])->name('sale.list');
+   //   Route::get('/sale/list/index',[SalesController::class, 'salelindex'])->name('sale.index.list');
+   //   Route::get('/customer/search',[SalesController::class, 'customer_search']);
+   //   Route::post('/sale/store',[SalesController::class, 'sale_store'])->name('sale.store');
+   //   Route::get('/sale/view/{id}',[SalesController::class, 'sale_view'])->name('sale.view');
+     Route::get('/balance/index',[SalesController::class, 'balanceindex'])->name('balance.index');
 
+     Route::group(['prefix'=>'bank', 'as'=>'bank.'], function() {
+      Route::get('/deposit', [BankController::class, 'deposit'])->name('deposit');
+      Route::post('/deposit/delete', [BankController::class, 'depositdelete'])->name('deposit.delete');
+      Route::post('/deposit/deletee', [BankController::class, 'withdrawdelete'])->name('withdraw.delete');
+      Route::post('/deposit', [BankController::class, 'storedeposit'])->name('store.deposit');
+      Route::get('/all-work-data', [BankController::class, 'work_data'])->name('index.data');
+      Route::get('/withdraw', [BankController::class, 'withdraw'])->name('withdraw');
+      Route::post('/withdraw', [BankController::class, 'storewithdraw'])->name('store.withdraw');
+      Route::get('/withdraw-data', [BankController::class, 'work_data_withdraw'])->name('withdraw.data');
+      Route::get('/bank-list', [BankController::class, 'banklist'])->name('list');
+      Route::post('/add', [BankController::class, 'bankadd'])->name('add');
+      Route::get('/list-data', [BankController::class, 'banklistdata'])->name('list.data');
+      Route::get('/list-edit/{id}', [BankController::class, 'banklistedit'])->name('list.edit');
+      Route::get('/list-history/{id}', [BankController::class, 'banklisthistory'])->name('list.history');
+      Route::get('/history/{id}', [BankController::class, 'banklisthistorydata'])->name('history.data');
+      Route::post('/update-bank/{id}', [BankController::class, 'banklistupdate'])->name('list.update'); 
+   });
+     Route::get('/purchase/stock-in/{invoice_id}/view-invoice', [PurchaseInvoiceController::class, 'purchase_invoice'])->name('purchase.stock.in.view.invoice');
 });

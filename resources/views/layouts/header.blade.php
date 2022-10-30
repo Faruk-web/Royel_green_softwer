@@ -10,6 +10,7 @@
                 data-action="sidebar_mini_toggle">
                 <i class="fa fa-fw fa-ellipsis-v"></i>
             </button>
+            <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'"  class="editt btn btn-primary btn-sm editProductt">Balance</a>
         </div>
         <div class="d-flex align-items-center">
             <div class="dropdown d-inline-block ml-2">
@@ -41,7 +42,6 @@
             </div>
         </div>
     </div>
-
     <div id="page-header-loader" class="overlay-header bg-white">
         <div class="content-header">
             <div class="w-100 text-center">
@@ -50,3 +50,37 @@
         </div>
     </div>
 </header>
+<div class="modal fade" id="exampleModall" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      
+    <div class="modal-content">
+         <div class="modal-header">
+        <h5 class="modal-title">Balance</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+     <div class="row gutters-tiny" id="amount">
+       </div>
+    </div>
+  </div>
+ 
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"
+referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+  $(function () {
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+    });
+    $('body').on('click', '.editProductt', function () {
+      $.get("{{ route('balance.index') }}", function (data) {
+         $('#amount').html(data);
+          $('#exampleModall').modal('show');
+      });
+
+      });});
+ 
+</script>

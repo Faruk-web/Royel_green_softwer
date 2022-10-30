@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use DataTables;
 use Illuminate\Support\Facades\DB;
-
+use PDF;
+// use \PDF;
 
 class ProductionToProductController extends Controller
 {
@@ -73,7 +74,21 @@ class ProductionToProductController extends Controller
        public function production_material(){
         return view('invoice.production_material_create');
     }
-
+        //invoice
+        public function production_invoice_view($invoice_id)
+        {
+            $shop_info = DB::table('business_infos')->first();
+            
+            $btb_invoice_info = ProductInvoice::where('invioce_number', $invoice_id)->first();
+            // dd($btb_invoice_info);
+            if($btb_invoice_info) {
+                $pdf = PDF::loadView('product.view_invoice', compact('shop_info', 'btb_invoice_info'));
+                return $pdf->stream('supplier invoice '.$btb_invoice_info->invoice_id);
+            }
+            else {
+                return Redirect()->back()->with('error', 'Sorry you can not access this page');
+            }
+        }
     //productiontoproduct 
     public function production_to_make_product($id){
         $production_invoice = ProductInvoice::find($id);

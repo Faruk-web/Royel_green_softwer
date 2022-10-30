@@ -15,6 +15,7 @@ class CreateExpensesTable extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
+            $table->string('invoice_number')->nullable();
             $table->string('expenses_category_id')->nullable();
             $table->string('amount')->nullable();
             $table->string('note')->nullable();
