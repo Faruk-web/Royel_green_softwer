@@ -26,12 +26,12 @@
                 <div class="block-content font-size-sm">
                     <div class="form-group">
                         <label for="example-text-input">Bank</label>
-                       <Select class="form-control" name="bank_id">
-                           <option selected disabled>Select Bank</option>
-                           @foreach ($banks as $bank)
-                               <option value="{{$bank->id}}">{{$bank->name}}</option>
-                           @endforeach
-                       </Select>
+                        <Select class="form-control" name="bank_id" required>
+                          <option value="">Select Bank</option>
+                          @foreach ($banks as $bank)
+                              <option value="{{$bank->id}}">{{$bank->name}} [Balance: {{$bank->total_amount}}]</option>
+                          @endforeach
+                        </Select>
                     </div>
                     <div class="form-group">
                         <label for="example-text-input">Amount</label>
@@ -54,7 +54,7 @@
 </div>
 <!-- END Fade In Block Modal -->
             <div class="page-title">
-              <div class="row">
+              <div class="row mt-4">
                 <div class="col-12 col-sm-9">
                   <h3>Deposit List</h3>
                 </div>

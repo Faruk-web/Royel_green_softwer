@@ -31,14 +31,22 @@ class AdminController extends Controller
             $setting = new Business_info;
         }
 
-        if($request->hasfile('logo'))
-        {
-            $destination = './uploads/settings/'.$info->logo;
-            if(File::exists($destination))
-            {
-                File::delete($destination);
-            }
+        // if($request->hasfile('logo'))
+        // {
+        //     $destination = './uploads/settings/'.$info->logo;
+        //     if(File::exists($destination))
+        //     {
+        //         File::delete($destination);
+        //     }
+        // }
+
+        if ($image = $request->file('logo')) {
+            $destinationPath = 'image/';
+            $profileImage = 'image/'.date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $setting->logo = "$profileImage";
         }
+    
         
         // if($request->logo) {
         //     $logo = $request->file('logo');

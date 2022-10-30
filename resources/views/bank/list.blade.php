@@ -54,7 +54,7 @@
     </div>
 </div>
             <div class="page-title">
-              <div class="row">
+              <div class="row mt-4">
                 <div class="col-12 col-sm-9">
                   <h3>Bank List</h3>
                 </div>

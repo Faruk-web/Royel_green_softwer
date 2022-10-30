@@ -148,11 +148,12 @@ class ProductionToProductOutPutController extends Controller
                     $check_product_stock->stock_quantity = $updated_stock;
                     $check_product_stock->update();
                 }
-                else {
+                else if(is_null($check_product_stock)){
                     $product_stock =  new ProductStock;
                     $product_stock->product_id = $product_id;
                     $product_stock->stock_quantity = $quantity;
                     $product_stock->date = Carbon::now();
+                    $product_stock->save();
                 }
             }
 

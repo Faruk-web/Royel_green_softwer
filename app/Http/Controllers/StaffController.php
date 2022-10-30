@@ -43,7 +43,7 @@ class StaffController extends Controller
         $staff->note=$request->note;
         $staff->save();
 
-        return redirect('/staff/list')->with('success','update successfully');
+        return redirect('/staff/list')->with('success','New Staff Added.');
     }
     
     public function stafflist(){

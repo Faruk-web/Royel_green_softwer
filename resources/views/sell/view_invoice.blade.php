@@ -63,7 +63,7 @@
                                 <tr>
                                     <td style="border: 0px solid white;">
                                         <div>
-                                            <img src="{{asset(optional($business_info)->logo)}}" alt="Company Logo">
+                                            <img src="{{asset(optional($business_info)->logo)}}" width="200px" alt="Company Logo">
                                         </div>
                                     </td>
                                     <td style="text-align: right; border: 0px solid white;">

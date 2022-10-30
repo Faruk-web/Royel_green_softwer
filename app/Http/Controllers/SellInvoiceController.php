@@ -94,6 +94,7 @@ class SellInvoiceController extends Controller
                         ->select('products.*', 'product_stocks.*')
                         ->get();
 
+                
           if(!empty($product_info)) {
               if(count($products) > 0) {
                 $output .= '<table class="table table-sm table-bordered">

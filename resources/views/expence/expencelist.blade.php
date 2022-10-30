@@ -36,7 +36,6 @@
                                   <th scope="col">Expense Category</th>
                                   <th  scope="col">Amount</th>
                                    <!-- <th  scope="col">Voucher</th> -->
-                                 <th scope="col">Invoice Number</th>
                                   <th scope="col">Note</th>
                                
                                 </tr>
@@ -63,7 +62,6 @@
                     {data: 'category', name: 'category'},
                     {data: 'amount', name: 'amount'},
                     // {data: 'voucher', name: 'voucher'},
-                    {data: 'invoice', name: 'invoice'},
                     {data: 'note', name: 'note'},
                   
                       
