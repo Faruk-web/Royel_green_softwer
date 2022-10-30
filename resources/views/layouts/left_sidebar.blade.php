@@ -97,12 +97,12 @@
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="{{route('material.stock')}}">
-                                <span class="nav-main-link-name">Materials Current stock</span>
+                                <span class="nav-main-link-name">Raw Materials stock</span>
                             </a>
                         </li>
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="{{route('production.product.stock')}}">
-                                <span class="nav-main-link-name">Products Current stock</span>
+                                <span class="nav-main-link-name">Products stock</span>
                             </a>
                         </li>
                     </ul>
@@ -154,13 +154,13 @@
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="{{route('bill.preparation')}}">
-                                <span class="nav-main-link-name">Prepare Bill</span>
+                                <span class="nav-main-link-name text-dark">Prepare Bill</span>
                             </a>
                         </li>
                         
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="{{route('sell.index')}}">
-                                <span class="nav-main-link-name">Bill / Sold Invoices</span>
+                                <span class="nav-main-link-name text-dark">Bill / Sold Invoices</span>
                             </a>
                         </li>
                        

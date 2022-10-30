@@ -222,6 +222,7 @@ class ProductionToProductOutPutController extends Controller
     public function productstock(){
         return view('production.stock');
     }
+
     public function productstockdata(Request $request){
         if ($request->ajax()) {
             $data = ProductStock::orderBy('id', 'desc')->get();
@@ -233,17 +234,14 @@ class ProductionToProductOutPutController extends Controller
                 ->addColumn('product_id', function($row){
                     return optional($row->ProductInfo)->product_name;
                 })
-                ->addColumn('unit_type', function($row){
-                    return optional($row->ProductInfo)->unit_type;
-                })
                 ->addColumn('size', function($row){
                     return optional($row->ProductInfo)->size;
                 })
                 ->addColumn('stock_quantity', function($row){
-                    return $row->stock_quantity;
+                    return $row->stock_quantity." ".optional($row->ProductInfo)->unit_type;
                 })
                 
-                ->rawColumns(['action', 'product_id', 'stock_quantity','unit_type','size'])
+                ->rawColumns(['action', 'product_id', 'stock_quantity', 'size'])
                 ->make(true);
         }
     }

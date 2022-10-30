@@ -76,18 +76,18 @@ class ProductionToProductController extends Controller
     //invoice
     public function production_invoice_view($invoice_id)
     {
-        $shop_info = DB::table('business_infos')->first();
+        $business_info = DB::table('business_infos')->first();
         
         $btb_invoice_info = ProductInvoice::where('invioce_number', $invoice_id)->first();
-        // dd($btb_invoice_info);
+        
         if($btb_invoice_info) {
-            $pdf = PDF::loadView('product.view_invoice', compact('shop_info', 'btb_invoice_info'));
-            return $pdf->stream('supplier invoice '.$btb_invoice_info->invoice_id);
+            return view('product.view_invoice', compact('business_info', 'btb_invoice_info'));
         }
         else {
             return Redirect()->back()->with('error', 'Sorry you can not access this page');
         }
     }
+
     //productiontoproduct 
     public function production_to_make_product($id){
         $production_invoice = ProductInvoice::find($id);
