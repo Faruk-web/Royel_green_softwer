@@ -13,7 +13,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StaffSalleryController;
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\BankController;
-
+use App\Http\Controllers\CRMController;
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -29,13 +29,24 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/admin/update-print-cost', [SettingsController::class, 'store'])->name('update.print.cost');
 
 
-    //Begin: crm
-    // Route::get('/crm', [CRMcontroller::class, 'index'])->name('admin.crm');
-    // Route::post('/create-crm', [CRMcontroller::class, 'store'])->name('admin.create.new.crm');
-    // Route::get('/edit-crm/{id}', [CRMcontroller::class, 'edit'])->name('admin.edit.crm');
-    // Route::post('/update-crm/{id}', [CRMcontroller::class, 'update']);
-    // Route::get('/deactive-crm/{id}', [CRMcontroller::class, 'DeactiveCRM']);
-    // Route::get('/active-crm/{id}', [CRMcontroller::class, 'ActiveCRM']);
+      //Begin:: role & permission
+      Route::get('/admin/role', [AdminController::class, 'role'])->name('admin.role');
+      Route::post('/admin/store-role', [AdminController::class, 'create_role'])->name('admin.create.roll');
+      Route::get('/admin/edit-role/{id}', [AdminController::class, 'Edit_Admin_helper_role'])->name('admin.edit.roll');
+      Route::post('/admin/update-admin-role/{id}', [AdminController::class, 'update_Admin_helper_role']);
+      Route::get('/admin/role-permissions/{id}', [AdminController::class, 'admin_helper_permission']);
+      Route::get('/admin/set-permission-to-admin-helper-role', [AdminController::class, 'set_permission_to_admin_helper_role']);
+      Route::get('/admin/delete-permission-from-role', [AdminController::class, 'delete_permission_from_role']);
+      
+  
+      //Begin::Admin  CRM
+      Route::get('/admin/all-crm', [CRMController::class, 'index'])->name('admin.crm');
+      Route::post('/admin/create-crm', [CRMController::class, 'store'])->name('admin.create.crm');
+      Route::get('/admin/edit-crm/{id}', [CRMController::class, 'edit']);
+      Route::post('/admin/update-crm/{id}', [CRMController::class, 'update']);
+      Route::get('/admin/deactive-crm/{id}', [CRMController::class, 'DeactiveCRM']);
+      Route::get('/admin/active-crm/{id}', [CRMController::class, 'ActiveCRM']);
+      //End::Admin  CRM
 
     //Material purchase
     Route::get('/raw/material', [RawMaterial::class, 'rawmaterial'])->name('raw.material');

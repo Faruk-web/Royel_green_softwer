@@ -24,13 +24,32 @@
                     <span class="nav-main-link-name"><span class="rounded p-1 ">Dashboard</span></span>
                 </a>
             </li>
+            
+            @if($user->hasPermissionTo('settings') || $user->type == 'admin')
             <li class="nav-main-item">
                 <a class="nav-main-link active" href="{{route('setting')}}">
                     <i class="nav-main-link-icon fas fa-edit"></i>
                     <span class="nav-main-link-name"><span class="rounded p-1">Setting</span></span>
                 </a>
             </li>
-                
+            @endif
+            @if($user->hasPermissionTo('crm.view') || $user->type == 'admin')
+                <li class="nav-main-item">
+                    <a class="nav-main-link active" href="{{route('admin.crm')}}">
+                        <i class="nav-main-link-icon fas fa-user-friends"></i>
+                        <span class="nav-main-link-name"><span class="rounded p-1 ">CRM</span></span>
+                    </a>
+                </li>
+                @endif
+
+                @if($user->hasPermissionTo('role.view') || $user->type == 'admin')
+                <li class="nav-main-item">
+                    <a class="nav-main-link active" href="{{route('admin.role')}}">
+                        <i class="nav-main-link-icon fab fa-r-project"></i>
+                        <span class="nav-main-link-name"><span class="rounded p-1 ">Roles</span></span>
+                    </a>
+                </li>
+                @endif
                 <!-- <li class="nav-main-item">
                     <a class="nav-main-link active" href="">
                         <i class="nav-main-link-icon fas fa-plane"></i>
@@ -56,19 +75,23 @@
                         <span class="nav-main-link-name"><span class="rounded p-1 ">Report</span></span>
                     </a>
                 </li> -->
+                @if($user->hasPermissionTo('suppliers') || $user->type == 'admin')
                 <li class="nav-main-item">
                     <a class="nav-main-link active" href="{{route('supplier.list')}}">
                         <i class="nav-main-link-icon fas fa-id-card-alt"></i>
                         <span class="nav-main-link-name"><span class="rounded p-1 ">Suppliers</span></span>
                     </a>
                 </li>
+                @endif
+                @if($user->hasPermissionTo('rawmaterial') || $user->type == 'admin')
                 <li class="nav-main-item">
                     <a class="nav-main-link active" href="{{route('raw.material.list')}}">
                         <i class="nav-main-link-icon fa fa-file"></i>
                         <span class="nav-main-link-name"><span class="rounded p-1 ">Raw Materials</span></span>
                     </a>
                 </li>
-
+                @endif
+                @if($user->hasPermissionTo('purchase') || $user->type == 'admin')
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                     <i class="nav-main-link-icon fas fa-id-card-alt"></i>
@@ -87,8 +110,8 @@
                         </li> 
                     </ul>
                 </li>
-                
-
+                @endif
+                @if($user->hasPermissionTo('stocks') || $user->type == 'admin')
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                       <i class="nav-main-link-icon fa fa-coins"></i>
@@ -107,7 +130,8 @@
                         </li>
                     </ul>
                 </li>
-
+                @endif
+                @if($user->hasPermissionTo('products') || $user->type == 'admin')
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                       <i class="nav-main-link-icon fas fa-money-check text-light"></i>
@@ -126,6 +150,8 @@
                         </li>
                     </ul>
                 </li>
+                @endif
+                @if($user->hasPermissionTo('production') || $user->type == 'admin')
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                     <i class="nav-main-link-icon fas fa-plane"></i>
@@ -146,6 +172,8 @@
                        
                     </ul>
                 </li>
+                @endif
+                @if($user->hasPermissionTo('bill') || $user->type == 'admin')
                 <li class="nav-main-item bg-light">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                     <i class="nav-main-link-icon fa fa-cart-plus text-dark"></i>
@@ -167,6 +195,8 @@
                     </ul>
                 </li>
 
+                @endif
+                @if($user->hasPermissionTo('staff') || $user->type == 'admin')
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                         <i class="nav-main-link-icon fas fa-user-plus"></i>
@@ -194,6 +224,9 @@
 
                     </ul>
                 </li>
+
+              @endif
+                @if($user->hasPermissionTo('expense') || $user->type == 'admin')
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                         <i class="nav-main-link-icon fas fas fa-money-check-alt"></i>
@@ -220,6 +253,9 @@
                       
                     </ul>
                 </li>
+                @endif
+
+                @if($user->hasPermissionTo('bank') || $user->type == 'admin')
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu active" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                         <i class="nav-main-link-icon fas fa-dollar-sign"></i>
@@ -243,7 +279,7 @@
                         </li>
                     </ul>
                 </li>
-                
+                @endif
 
                 
             </ul>
